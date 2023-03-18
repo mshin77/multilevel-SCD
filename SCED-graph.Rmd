@@ -1,0 +1,266 @@
+---
+title: 'Dataset for "Multilevel modeling of single-case data: Level changes and trends during phases moderated by complexity of outcome measures and single-case experimental designs"'
+date: "`r format(Sys.time(), '%B %d, %Y')`"
+output: 
+  html_document:
+    theme: flatly
+    code_folding: hide
+runtime: shiny
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(
+  message = FALSE, 
+  warning = FALSE
+)
+```
+
+This is an online supplemental materials for Authors (2022) to visualize single-case data. The raw dataset is available in the [Open Science Framework](https://osf.io/fz4vu/?view_only=e7166241418346de96f3e73ce9cdb133) platform. 
+
+## {.tabset}
+
+### Select the dataset
+```{r}
+suppressPackageStartupMessages({
+  library(readxl)
+  library(openxlsx)
+  library(DT)
+  library(shiny)
+  library(shinyBS)
+  library(dplyr)
+  library(ggplot2)
+})
+
+wp_data <- read.csv("data/wp_data.csv")
+
+# wp_data <- reactive({
+#   read_excel("wp_data_combined.xlsx")
+# })
+
+observe({
+  updateRadioButtons(session, "show_vars",
+                     label = NULL,
+                     choices = colnames, 
+                     selected = "")
+})
+
+colnames <- (unique(wp_data$author_year))
+
+inputPanel(
+  radioButtons("show_vars", "Select one or multiple columns.",
+               choices = colnames)
+)
+```
+
+```{r, echo = FALSE}
+br()
+br()
+br()
+```
+
+
+### Datasets
+```{r, echo=FALSE}
+inputPanel(
+  actionButton("display", "Display", icon = icon("table")),
+  downloadButton("download_table", "Download")
+)
+```
+
+```{r}
+wp_data_select <- eventReactive(input$display, {
+  
+  if (!is.null(input$show_vars)) {
+    wp_data %>% filter(author_year == input$show_vars) %>% tibble()
+  }
+})
+
+renderDT(wp_data_select(), options = list(scrollX = TRUE))
+```
+
+
+```{r, echo=FALSE}
+output$download_table <- downloadHandler(
+  filename = function() {
+    paste(input$show_vars, ".xlsx", sep = "")
+  },
+  content = function(file) {
+    write.xlsx(wp_data_select(), file, colNames = TRUE)
+  }
+)
+```
+
+
+```{r, echo=FALSE}
+br()
+```
+
+### Descriptive statistics 
+```{r, echo=FALSE}
+inputPanel(
+  actionButton("calculate", "Calculate", icon = icon("sigma"))
+)
+```
+
+```{r}
+wp_data_descriptive_group <- eventReactive(input$calculate, {
+  
+  wp_data_select() %>% 
+  group_by(author_year, dependent_variable, group, case) %>% 
+  summarise(across(where(is.numeric), list(min = min, max = max, mean = mean, SD = sd, count = sum))) %>%
+  select(author_year, dependent_variable, group, case,
+         session_min, session_max, session_mean, session_SD,
+         outcome_min, outcome_max, outcome_mean, outcome_SD,
+         A1_count, B1_count, A2_count, B2_count, M_count, mixed_problem_count, generalization_count, withdrawal_count, multi_base_count, multi_probe_count, alternating_count) %>%
+  mutate_at(c("session_mean", "session_SD", "outcome_mean", "outcome_SD"), round, 2) %>%
+  mutate_at("session_max", round, 0)
+
+})
+
+renderDT(wp_data_descriptive_group(), options = list(scrollX = TRUE))
+```
+
+### Plot
+```{r, echo=FALSE}
+inputPanel(
+  actionButton("plot", "Plot", icon = icon("play")),
+  actionButton("summary", "Slope", icon = icon("chart-line"))
+)
+```
+ 
+
+
+```{r}
+observeEvent(input$plot, {
+  
+  wp_data_select_td <- wp_data_select()
+  
+  wp_data_select_td$case <- paste0("Case ", wp_data_select_td$case, sep = "")
+  wp_data_select_td$group <- paste0("Group ", wp_data_select_td$group, sep = "")
+  wp_data_select_td$dependent_variable <- paste0("DV ", wp_data_select_td$dependent_variable, sep = "")
+  wp_data_select_td$study <- paste0("Study ", wp_data_select_td$study, sep = "")
+  
+  A1_v <- if(!is.null(wp_data_select_td$A1)) {
+    wp_data_select_td %>%
+      filter(A1 == 1) %>%
+      group_by(dependent_variable, group, case) %>%
+      mutate(min_A1 = min(session)) %>%
+      mutate(max_A1 = max(session))
+  }
+  
+  B1_v <- if(!is.null(wp_data_select_td$B1)) {
+    wp_data_select_td %>%
+      filter(B1 == 1) %>%
+      group_by(dependent_variable, group, case) %>%
+      mutate(min_B1 = min(session)) %>%
+      mutate(max_B1 = max(session))
+  }
+  
+  A2_v <- if(!is.null(wp_data_select_td$A2)) {
+    wp_data_select_td %>%
+      filter(A2 == 1) %>%
+      group_by(dependent_variable, group, case) %>%
+      mutate(min_A2 = min(session)) %>%
+      mutate(max_A2 = max(session))
+  }
+  
+  B2_v <- if(!is.null(wp_data_select_td$B2)) {
+    wp_data_select_td %>%
+      filter(B2 == 1) %>%
+      group_by(dependent_variable, group, case) %>%
+      mutate(min_B2 = min(session)) %>%
+      mutate(max_B2 = max(session))
+  }
+  
+  M_v <- if(!is.null(wp_data_select_td$M)) {
+    wp_data_select_td %>%
+      filter(M == 1) %>%
+      group_by(dependent_variable, group, case) %>%
+      mutate(min_M = min(session)) %>%
+      mutate(max_M = max(session))
+  }
+  
+  mixed_problem_v <- if(!is.null(wp_data_select_td$mixed_problem)) {
+    wp_data_select_td %>%
+      filter(mixed_problem == 1) %>%
+      group_by(dependent_variable, group, case) %>%
+      mutate(min_mixed_problem = min(session)) %>%
+      mutate(max_mixed_problem = max(session))
+  }
+  
+  generalization_v <- if(!is.null(wp_data_select_td$generalization)) {
+    wp_data_select_td %>%
+      filter(generalization == 1) %>%
+      group_by(dependent_variable, group, case) %>%
+      mutate(min_generalization = min(session)) %>%
+      mutate(max_generalization = max(session)) 
+  }
+
+sced.plot <- wp_data_select_td %>%
+    ggplot(aes(session, outcome, color = as.factor(phase_plot), shape = phase_plot)) +
+    facet_grid(dependent_variable + group + case ~ .) +
+    geom_line(data = wp_data_select_td %>% filter(phase_plot %in% c("Baseline 1", "Intervention 1", "Baseline 2", "Intervention 2", "Maintenance")),
+              aes(group = phase_plot),
+              size = 0.5) +
+    geom_point(size = 2.5) +
+    theme_minimal(base_size = 13) +
+    theme(
+      plot.title = element_text(face = "bold", size = 15),
+      legend.position ="top",
+      panel.grid.major = element_line(colour = "grey85", linewidth = 0.2),
+      panel.grid.minor = element_blank(),
+      legend.text = element_text(size = 13),
+      legend.title = element_text(size = 13),
+      legend.title.align = 0.5,
+      strip.text.y = element_text(color = "#3B3B3B", size = 13),
+      axis.text.x = element_text(size = 13, color = "#3B3B3B"),
+      axis.text.y = element_text(size = 13, color = "#3B3B3B"),
+      axis.title = element_text(face = "bold", size = 13, color = "#3B3B3B")
+    ) +
+    labs(
+      x = "Session",
+      y = "Correct Percentage",
+      title = input$show_vars
+    ) +
+    guides(shape="none") +
+    guides(color = guide_legend(title = "Phase"), shape = guide_legend(title="Phase")) +
+    scale_shape_manual(values = 0:10) +
+    geom_vline(data = A1_v, ggplot2::aes(xintercept = A1_v$max_A1 + 0.5),
+               linetype = "longdash", linewidth = 0.3, color = "#808080") +
+    geom_vline(data = B1_v, ggplot2::aes(xintercept = B1_v$max_B1 + 0.5),
+               linetype = "longdash", linewidth = 0.3, color = "#808080") +
+    geom_vline(data = A2_v, ggplot2::aes(xintercept = A2_v$max_A2 + 0.5),
+               linetype = "longdash", linewidth = 0.3, color = "#808080") +
+    geom_vline(data = B2_v, ggplot2::aes(xintercept = B2_v$max_B2 + 0.5),
+               linetype = "longdash", linewidth = 0.3, color = "#808080") +
+    geom_vline(data = M_v, ggplot2::aes(xintercept = M_v$max_M + 0.5),
+               linetype = "longdash", linewidth = 0.3, color = "#808080") 
+
+  output$pl <- renderPlot({
+    if (input$summary) {
+      sced.plot + stat_smooth(method = "lm", se = FALSE, color = "#3B3B3B", linewidth = 0.5, alpha = 1, linetype="dashed")} else {
+      sced.plot
+    } 
+  })
+})
+
+bsCollapse(id="asdf", open=0,
+           bsCollapsePanel("Click to set plot dimensions", value=1, style="success",
+                           p(strong("Dimensions of the plot")),
+                           div(style="display:inline-block", sliderInput(inputId = "height", post=" px",
+                                                                         label = "height", min = 500, max = 3000, step = 5, value = 1500)),
+                           div(style="display:inline-block", sliderInput(inputId = "width", post=" px",
+                                                                         label = "width",  min = 500, max = 1000, step = 5, value = 900))
+           )
+)
+
+renderUI({
+  plotOutput("pl", height=input$height, width=input$width)
+})
+```
+
+
+
+
+
+
