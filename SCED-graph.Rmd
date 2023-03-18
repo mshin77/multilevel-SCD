@@ -1,5 +1,5 @@
 ---
-title: 'Dataset for "Multilevel modeling of single-case data: Level changes and trends during phases moderated by complexity of outcome measures and single-case experimental designs"'
+title: 'Datasets and graphs for “Multilevel modeling of single-case data: Level changes and trends during phases moderated by complexity of outcome measures and single-case experimental designs”'
 date: "`r format(Sys.time(), '%B %d, %Y')`"
 output: 
   html_document:
