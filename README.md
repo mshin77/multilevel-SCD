@@ -1,1 +1,1 @@
-Datasets and graphs for “Multilevel modeling of single-case data: Level changes and trends during phases moderated by complexity of outcome measures and single-case experimental designs” [https://data-paper.shinyapps.io/multilevel-SCED-Graph](https://data-paper.shinyapps.io/multilevel-SCED-Graph).
+Authors. (2023). *Multilevel modeling of single-case data: Level changes and trends during phases moderated by complexity of outcome measures and single-case experimental designs*. [Manuscript submitted for publication]. https://multilevel.shinyapps.io/SCED
