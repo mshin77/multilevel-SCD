@@ -201,11 +201,11 @@ Model.3.RandomEffect.se
 
 ### Model.4
 
-#### **Contextual model with cross-level interactions and AR(1) correlation structure (corAR1)**
+#### **Contextual model with cross-level interactions and AR(1) correlation structure (corCAR1)** 
 
 ```{r, eval=FALSE}
 Model.4 <- update(Model.3,
-                  correlation = corAR1(value = 0.3, form = ~ session | study/cluster/case))
+                  correlation = corCAR1(value = 0.3, form = ~ session | study/cluster/case))
 ```
 
 #### Cluster-robust variance estimation 
@@ -231,11 +231,10 @@ M3_M4
 
 ### Model.5
 
-#### **Contextual model with cross-level interactions and AR(1) correlation structure (corCAR1)** 
+#### **Contextual model with cross-level interactions and heterogenous AR(1) correlation structure (corCAR1)** 
 
 ```{r, eval=FALSE}
-Model.5 <- update(Model.3,
-                  correlation = corCAR1(value = 0.3, form = ~ session | study/cluster/case))
+Model.5 <- update(Model.4, weights = varIdent(form = ~ 1 | design_type))
 ```
 
 #### Cluster-robust variance estimation 
@@ -244,7 +243,7 @@ Model.5 <- update(Model.3,
 options(width = 100)
 Model.5.vcov <- vcovCR(Model.5, type = "CR2")
 Model.5.crve <- coef_test(Model.5, vcov = Model.5.vcov , test = "Satterthwaite")
-Model.5.crve
+Model.5.crve 
 ```
 
 #### Standard errors for variance components 
@@ -259,31 +258,6 @@ M4_M5 <- anova(Model.4, Model.5)
 M4_M5
 ```
 
-### Model.6
-
-#### **Contextual model with cross-level interactions and heterogenous AR(1) correlation structure (corAR1)**
-
-```{r, eval=FALSE}
-Model.6 <- update(Model.4, weights = varIdent(form = ~ 1 | design_type))
-```
-
-#### Cluster-robust variance estimation 
-
 ```{r}
-options(width = 100)
-Model.6.vcov <- vcovCR(Model.6, type = "CR2")
-Model.6.crve <- coef_test(Model.6, vcov = Model.6.vcov , test = "Satterthwaite")
-Model.6.crve 
-```
-
-#### Standard errors for variance components 
-
-```{r}
-Model.6.RandomEffect.se <- sqrt(diag(varcomp_vcov(Model.6)))
-Model.6.RandomEffect.se
-```
-
-```{r}
-M4_M6 <- anova(Model.4, Model.6)
-M4_M6
+save(wp_data_mlm, Model.1, Model.2, Model.3, Model.4, Model.5, M3_M4, M4_M5, file = "data/wp_mlm.RData")
 ```
