@@ -287856,7 +287856,7 @@ class="section level4">
 </div>
 <div id="autocorrelation-serial-correlation" class="section level4">
 <h4><strong>Autocorrelation (serial correlation)</strong></h4>
-<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">ACF</span>(Model<span class="fl">.1</span>, <span class="at">maxLag=</span><span class="dv">10</span>), <span class="at">alpha =</span> .<span class="dv">01</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">ACF</span>(Model<span class="fl">.1</span>, <span class="at">maxLag=</span><span class="dv">15</span>), <span class="at">alpha =</span> .<span class="dv">01</span>)</span></code></pre></div>
 <p><img src="index_files/figure-html/unnamed-chunk-9-1.png" width="576" /></p>
 </div>
 </div>
@@ -288124,9 +288124,9 @@ class="section level4">
 ##                              0.03153216                              9.97565180</code></pre>
 <div class="sourceCode" id="cb30"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a>M3_M4 <span class="ot">&lt;-</span> <span class="fu">anova</span>(Model<span class="fl">.3</span>, Model<span class="fl">.4</span>)</span>
 <span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a>M3_M4</span></code></pre></div>
-<pre><code>##         Model df      AIC      BIC    logLik
-## Model.3     1 62 16919.71 17266.60 -8397.856
-## Model.4     2 62 16919.50 17266.38 -8397.748</code></pre>
+<pre><code>##         Model df      AIC      BIC    logLik   Test  L.Ratio p-value
+## Model.3     1 61 17011.52 17352.81 -8444.759                        
+## Model.4     2 62 16919.50 17266.38 -8397.748 1 vs 2 94.02131  &lt;.0001</code></pre>
 </div>
 </div>
 <div id="model.5" class="section level3">
@@ -288144,37 +288144,37 @@ heterogenous AR(1) correlation structure (corCAR1)</strong></h4>
 <span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a>Model.<span class="fl">5.</span>vcov <span class="ot">&lt;-</span> <span class="fu">vcovCR</span>(Model<span class="fl">.5</span>, <span class="at">type =</span> <span class="st">&quot;CR2&quot;</span>)</span>
 <span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a>Model.<span class="fl">5.</span>crve <span class="ot">&lt;-</span> <span class="fu">coef_test</span>(Model<span class="fl">.5</span>, <span class="at">vcov =</span> Model.<span class="fl">5.</span>vcov , <span class="at">test =</span> <span class="st">&quot;Satterthwaite&quot;</span>)</span>
 <span id="cb33-4"><a href="#cb33-4" aria-hidden="true" tabindex="-1"></a>Model.<span class="fl">5.</span>crve </span></code></pre></div>
-<pre><code>##                      Coef. Estimate     SE  t-stat d.f. (Satt) p-val (Satt) Sig.
-##                (Intercept)   26.428  2.934  9.0082        4.33      &lt; 0.001  ***
-##                 Time_A1_A1    1.647  1.220  1.3498        2.54      0.28475     
-##                         B1   55.699  8.752  6.3645        6.98      &lt; 0.001  ***
-##                 Time_B1_B1    2.794  1.755  1.5917       12.26      0.13689     
-##                         A2   -8.757  7.600 -1.1523        2.59      0.34436     
-##                 Time_A2_A2    9.012  4.588  1.9643        1.24      0.25997     
-##                         B2   57.282  7.601  7.5362        4.39      0.00114   **
-##                 Time_B2_B2    1.657  1.192  1.3910        2.63      0.27031     
-##                          M   56.455  8.317  6.7878        6.43      &lt; 0.001  ***
-##                   Time_M_M    0.697  0.968  0.7205        3.49      0.51657     
-##              mixed_problem   -2.324  4.058 -0.5726        6.03      0.58762     
-##             generalization   -6.480  6.407 -1.0114        4.75      0.36052     
-##                 withdrawal  -17.453 15.282 -1.1421        1.40      0.41168     
-##                 multi_base    1.258  3.584  0.3509        2.85      0.74999     
-##                alternating   -6.337  4.396 -1.4414        1.60      0.31457     
-##   Time_A1_A1:mixed_problem   -1.840  1.410 -1.3049        3.38      0.27361     
-##           B1:mixed_problem  -13.714 17.956 -0.7637        9.22      0.46412     
-##   Time_B1_B1:mixed_problem   -0.100  1.772 -0.0567        3.33      0.95805     
-##  Time_A1_A1:generalization   -0.924  1.782 -0.5183        2.18      0.65210     
-##          B1:generalization    2.767 13.386  0.2067        4.89      0.84459     
-##  Time_B1_B1:generalization   -0.432  0.314 -1.3765        2.78      0.26915     
-##      Time_A1_A1:withdrawal   -4.749  2.211 -2.1476        1.88      0.17276     
-##              B1:withdrawal  -57.388 21.909 -2.6194        1.42      0.16829     
-##      Time_B1_B1:withdrawal    2.009 19.992  0.1005        1.18      0.93422     
-##      Time_A1_A1:multi_base   -0.629  1.071 -0.5871        2.98      0.59861     
-##              B1:multi_base    0.954 13.001  0.0734        3.33      0.94567     
-##      Time_B1_B1:multi_base   -0.303  2.049 -0.1481        3.06      0.89151     
-##     Time_A1_A1:alternating   -5.489  1.734 -3.1653        1.64      0.11196     
-##             B1:alternating   40.654 15.422  2.6361        1.62      0.14739     
-##     Time_B1_B1:alternating   -2.648  4.406 -0.6011        1.43      0.62885</code></pre>
+<pre><code>##                      Coef. Estimate     SE   t-stat d.f. (Satt) p-val (Satt) Sig.
+##                (Intercept)   24.069  4.274  5.63167        4.15      0.00439   **
+##                 Time_A1_A1    2.122  1.410  1.50561        2.43      0.24923     
+##                         B1   57.379  8.643  6.63910        6.59      &lt; 0.001  ***
+##                 Time_B1_B1    2.916  1.788  1.63065       12.24      0.12840     
+##                         A2   -4.702  9.762 -0.48171        1.83      0.68152     
+##                 Time_A2_A2    9.659  4.645  2.07949        1.06      0.27384     
+##                         B2   64.722 11.096  5.83302        4.19      0.00371   **
+##                 Time_B2_B2    0.846  0.697  1.21328        1.73      0.36473     
+##                          M   57.019  8.239  6.92033        6.58      &lt; 0.001  ***
+##                   Time_M_M    0.664  0.971  0.68427        3.50      0.53641     
+##              mixed_problem   -0.119  4.474 -0.02652        5.60      0.97976     
+##             generalization   -3.452  8.105 -0.42588        4.76      0.68875     
+##                 withdrawal  -21.234 11.657 -1.82155        1.09      0.30393     
+##                 multi_base    1.485  3.766  0.39439        2.85      0.72095     
+##                alternating  -10.175  4.191 -2.42767        1.41      0.18582     
+##   Time_A1_A1:mixed_problem   -2.312  1.426 -1.62048        3.57      0.18895     
+##           B1:mixed_problem  -14.410 17.343 -0.83090        9.45      0.42653     
+##   Time_B1_B1:mixed_problem   -0.274  1.763 -0.15528        3.33      0.88555     
+##  Time_A1_A1:generalization   -1.728  2.091 -0.82682        2.82      0.47238     
+##          B1:generalization   -0.468 13.987 -0.03344        5.16      0.97458     
+##  Time_B1_B1:generalization   -0.424  0.310 -1.36726        2.79      0.27119     
+##      Time_A1_A1:withdrawal   -2.991  3.467 -0.86254        1.43      0.50836     
+##              B1:withdrawal  -54.520 20.290 -2.68704        1.44      0.16058     
+##      Time_B1_B1:withdrawal    2.072 15.402  0.13456        1.17      0.91231     
+##      Time_A1_A1:multi_base   -0.745  1.129 -0.65996        3.04      0.55580     
+##              B1:multi_base    0.107 12.712  0.00841        3.40      0.99376     
+##      Time_B1_B1:multi_base   -0.256  2.037 -0.12575        3.06      0.90773     
+##     Time_A1_A1:alternating   -4.211  2.119 -1.98722        1.53      0.22246     
+##             B1:alternating   47.798 19.550  2.44487        1.50      0.17492     
+##     Time_B1_B1:alternating   -2.842  5.331 -0.53324        1.29      0.67114</code></pre>
 </div>
 <div id="standard-errors-for-variance-components-4"
 class="section level4">
@@ -288182,46 +288182,46 @@ class="section level4">
 <div class="sourceCode" id="cb35"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a>Model.<span class="fl">5.</span>RandomEffect.se <span class="ot">&lt;-</span> <span class="fu">sqrt</span>(<span class="fu">diag</span>(<span class="fu">varcomp_vcov</span>(Model<span class="fl">.5</span>)))</span>
 <span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a>Model.<span class="fl">5.</span>RandomEffect.se</span></code></pre></div>
 <pre><code>##              Tau.study.var((Intercept))   Tau.study.cov(Time_A1_A1,(Intercept)) 
-##                             43.68671323                              7.52932527 
+##                             43.51021492                              7.50336351 
 ##               Tau.study.var(Time_A1_A1)           Tau.study.cov(B1,(Intercept)) 
-##                              2.09066244                             46.31204805 
+##                              2.08869521                             46.06375920 
 ##            Tau.study.cov(B1,Time_A1_A1)                       Tau.study.var(B1) 
-##                             10.47349719                             95.93669168 
+##                             10.44430127                             95.14537679 
 ##   Tau.study.cov(Time_B1_B1,(Intercept))    Tau.study.cov(Time_B1_B1,Time_A1_A1) 
-##                             17.48317273                              3.51044856 
+##                             17.45710015                              3.50490339 
 ##            Tau.study.cov(Time_B1_B1,B1)               Tau.study.var(Time_B1_B1) 
-##                             26.86173612                             11.75695291 
+##                             26.68831245                             11.72638126 
 ##            Tau.cluster.var((Intercept)) Tau.cluster.cov(Time_A1_A1,(Intercept)) 
-##                             38.16472627                              5.09883786 
+##                             38.50877117                              5.07638878 
 ##             Tau.cluster.var(Time_A1_A1)         Tau.cluster.cov(B1,(Intercept)) 
-##                              1.09166035                             34.28233894 
+##                              1.07322855                             34.25176865 
 ##          Tau.cluster.cov(B1,Time_A1_A1)                     Tau.cluster.var(B1) 
-##                              5.60503391                             53.86095778 
+##                              5.51079355                             53.03188341 
 ## Tau.cluster.cov(Time_B1_B1,(Intercept))  Tau.cluster.cov(Time_B1_B1,Time_A1_A1) 
-##                              1.97201431                              0.32452502 
+##                              1.96638689                              0.31640984 
 ##          Tau.cluster.cov(Time_B1_B1,B1)             Tau.cluster.var(Time_B1_B1) 
-##                              2.35788983                              0.15535778 
+##                              2.30068089                              0.15193127 
 ##               Tau.case.var((Intercept))    Tau.case.cov(Time_A1_A1,(Intercept)) 
-##                             17.07951029                              2.37814900 
+##                             17.04643122                              2.39171245 
 ##                Tau.case.var(Time_A1_A1)            Tau.case.cov(B1,(Intercept)) 
-##                              0.46419474                             17.10173284 
+##                              0.47116429                             16.95875911 
 ##             Tau.case.cov(B1,Time_A1_A1)                        Tau.case.var(B1) 
-##                              2.95263025                             26.16611024 
+##                              2.95524793                             25.87115068 
 ##    Tau.case.cov(Time_B1_B1,(Intercept))     Tau.case.cov(Time_B1_B1,Time_A1_A1) 
-##                              0.71786704                              0.10865897 
+##                              0.71929014                              0.10923058 
 ##             Tau.case.cov(Time_B1_B1,B1)                Tau.case.var(Time_B1_B1) 
-##                              0.92539591                              0.04173574 
+##                              0.92171407                              0.04182249 
 ##                              cor_params                             var_params1 
-##                              0.03177833                              0.10315374 
+##                              0.03178642                              0.10314940 
 ##                             var_params2                             var_params3 
-##                              0.04666219                              0.06070406 
+##                              0.04670918                              0.06075249 
 ##                                sigma_sq 
-##                             10.76119454</code></pre>
+##                             10.75067693</code></pre>
 <div class="sourceCode" id="cb37"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a>M4_M5 <span class="ot">&lt;-</span> <span class="fu">anova</span>(Model<span class="fl">.4</span>, Model<span class="fl">.5</span>)</span>
 <span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a>M4_M5</span></code></pre></div>
-<pre><code>##         Model df      AIC      BIC    logLik
-## Model.4     1 62 16919.71 17266.60 -8397.856
-## Model.5     2 62 16919.50 17266.38 -8397.748</code></pre>
+<pre><code>##         Model df      AIC      BIC    logLik   Test  L.Ratio p-value
+## Model.4     1 62 16919.50 17266.38 -8397.748                        
+## Model.5     2 65 16899.92 17263.59 -8384.960 1 vs 2 25.57685  &lt;.0001</code></pre>
 <div class="sourceCode" id="cb39"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a><span class="fu">save</span>(wp_data_mlm, Model<span class="fl">.1</span>, Model<span class="fl">.2</span>, Model<span class="fl">.3</span>, Model<span class="fl">.4</span>, Model<span class="fl">.5</span>, M3_M4, M4_M5, <span class="at">file =</span> <span class="st">&quot;data/wp_mlm.RData&quot;</span>)</span></code></pre></div>
 </div>
 </div>

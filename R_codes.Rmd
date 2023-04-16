@@ -118,7 +118,7 @@ ICC.L1
 #### **Autocorrelation (serial correlation)**
 
 ```{r, fig.width=6, fig.height=4}
-plot(ACF(Model.1, maxLag=10), alpha = .01)
+plot(ACF(Model.1, maxLag=15), alpha = .01)
 ```
 
 ### Model.2 
