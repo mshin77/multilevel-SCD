@@ -118,7 +118,7 @@ ICC.L1
 #### **Autocorrelation (serial correlation)**
 
 ```{r, fig.width=6, fig.height=4}
-plot(ACF(Model.1, maxLag=15), alpha = .01)
+plot(ACF(Model.1, maxLag=15), alpha = .05)
 ```
 
 ### Model.2 
@@ -155,6 +155,13 @@ Model.2.RandomEffect.se <- sqrt(diag(varcomp_vcov(Model.2)))
 Model.2.RandomEffect.se
 ```
 
+#### Comparing likelihoods of fitted objects
+
+```{r}
+M1_M2 <- anova(Model.1, Model.2)
+M1_M2
+```
+
 ### Model.3
 
 #### **Contextual model with cross-level interactions**
@@ -181,6 +188,7 @@ Model.3 <- lme(outcome ~
                random = ~ Time_A1_A1 + B1 + Time_B1_B1 | study/cluster/case,
                control=list(maxIter=100,msMaxIter=100,tolerance=1e-3,
                             opt="optim",optimMethod="BFGS"))
+
 ```
 
 #### Cluster-robust variance estimation 
@@ -199,13 +207,20 @@ Model.3.RandomEffect.se <- sqrt(diag(varcomp_vcov(Model.3)))
 Model.3.RandomEffect.se
 ```
 
+#### Comparing likelihoods of fitted objects
+
+```{r}
+M2_M3 <- anova(Model.2, Model.3)
+M2_M3
+```
+
 ### Model.4
 
 #### **Contextual model with cross-level interactions and AR(1) correlation structure (corCAR1)** 
 
 ```{r, eval=FALSE}
 Model.4 <- update(Model.3,
-                  correlation = corCAR1(value = 0.3, form = ~ session | study/cluster/case))
+                  correlation = corCAR1(value = 0.4, form = ~ session | study/cluster/case))
 ```
 
 #### Cluster-robust variance estimation 
@@ -223,6 +238,8 @@ Model.4.crve
 Model.4.RandomEffect.se <- sqrt(diag(varcomp_vcov(Model.4)))
 Model.4.RandomEffect.se
 ```
+
+#### Comparing likelihoods of fitted objects
 
 ```{r}
 M3_M4 <- anova(Model.3, Model.4)
@@ -253,11 +270,9 @@ Model.5.RandomEffect.se <- sqrt(diag(varcomp_vcov(Model.5)))
 Model.5.RandomEffect.se
 ```
 
+#### Comparing likelihoods of fitted objects
+
 ```{r}
 M4_M5 <- anova(Model.4, Model.5)
 M4_M5
-```
-
-```{r}
-save(wp_data_mlm, Model.1, Model.2, Model.3, Model.4, Model.5, M3_M4, M4_M5, file = "data/wp_mlm.RData")
 ```
