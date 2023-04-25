@@ -6,7 +6,7 @@
     <meta name="generator" content="pandoc" />
 
     
-        <meta name="date" content="2023-04-17" />
+        <meta name="date" content="2023-04-24" />
     
     <title>Multilevel modeling of single-case data: Level changes and trends during phases moderated by complexity of outcome measures and single-case experimental designs</title>
 
@@ -192,7 +192,7 @@ measures and single-case experimental designs</h1>
         
 
       <!-- html_clean authors -->
-         <h4 class="date"><em>2023-04-17</em></h4>
+         <h4 class="date"><em>2023-04-24</em></h4>
       
       
    
@@ -287804,7 +287804,7 @@ class="section level4">
 <span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>                            <span class="at">opt=</span><span class="st">&quot;optim&quot;</span>,<span class="at">optimMethod=</span><span class="st">&quot;BFGS&quot;</span>))</span></code></pre></div>
 </div>
 <div id="cluster-robust-variance-estimation" class="section level4">
-<h4>Cluster-robust variance estimation</h4>
+<h4><strong>Cluster-robust variance estimation</strong></h4>
 <div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">options</span>(<span class="at">width =</span> <span class="dv">100</span>)</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>Model.<span class="fl">1.</span>vcov <span class="ot">&lt;-</span> <span class="fu">vcovCR</span>(Model<span class="fl">.1</span>, <span class="at">type =</span> <span class="st">&quot;CR2&quot;</span>)</span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>Model.<span class="fl">1.</span>crve <span class="ot">&lt;-</span> <span class="fu">coef_test</span>(Model<span class="fl">.1</span>, <span class="at">vcov =</span> Model.<span class="fl">1.</span>vcov , <span class="at">test =</span> <span class="st">&quot;Satterthwaite&quot;</span>)</span>
@@ -287812,76 +287812,66 @@ class="section level4">
 <pre><code>##        Coef. Estimate   SE t-stat d.f. (Satt) p-val (Satt) Sig.
 ##  (Intercept)     58.2 2.91     20        17.4       &lt;0.001  ***</code></pre>
 </div>
-<div id="standard-errors-for-variance-components"
-class="section level4">
-<h4>Standard errors for variance components</h4>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>Model.<span class="fl">1.</span>RandomEffect.se <span class="ot">&lt;-</span> <span class="fu">sqrt</span>(<span class="fu">diag</span>(<span class="fu">varcomp_vcov</span>(Model<span class="fl">.1</span>)))</span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>Model.<span class="fl">1.</span>RandomEffect.se</span></code></pre></div>
-<pre><code>##   Tau.study.var((Intercept)) Tau.cluster.var((Intercept))    Tau.case.var((Intercept)) 
-##                     57.57259                     32.78056                     10.86309 
-##                     sigma_sq 
-##                     36.50349</code></pre>
-</div>
 <div id="intraclass-correlation-icc" class="section level4">
 <h4><strong>Intraclass correlation (ICC)</strong></h4>
 <div id="level-4-study" class="section level5">
 <h5>Level 4 (study)</h5>
-<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>total_var <span class="ot">&lt;-</span> <span class="fu">as.numeric</span>(<span class="fu">VarCorr</span>(Model<span class="fl">.1</span>)[[<span class="dv">2</span>]]) <span class="sc">+</span></span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as.numeric</span>(<span class="fu">VarCorr</span>(Model<span class="fl">.1</span>)[[<span class="dv">4</span>]]) <span class="sc">+</span></span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as.numeric</span>(<span class="fu">VarCorr</span>(Model<span class="fl">.1</span>)[[<span class="dv">6</span>]]) <span class="sc">+</span></span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as.numeric</span>(<span class="fu">VarCorr</span>(Model<span class="fl">.1</span>)[[<span class="dv">7</span>]]) </span>
-<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>ICC.L4 <span class="ot">=</span> <span class="fu">as.numeric</span>(<span class="fu">VarCorr</span>(Model<span class="fl">.1</span>)[[<span class="dv">2</span>]]) <span class="sc">/</span> total_var</span>
-<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>ICC.L4</span></code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>total_var <span class="ot">&lt;-</span> <span class="fu">as.numeric</span>(<span class="fu">VarCorr</span>(Model<span class="fl">.1</span>)[[<span class="dv">2</span>]]) <span class="sc">+</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as.numeric</span>(<span class="fu">VarCorr</span>(Model<span class="fl">.1</span>)[[<span class="dv">4</span>]]) <span class="sc">+</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as.numeric</span>(<span class="fu">VarCorr</span>(Model<span class="fl">.1</span>)[[<span class="dv">6</span>]]) <span class="sc">+</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as.numeric</span>(<span class="fu">VarCorr</span>(Model<span class="fl">.1</span>)[[<span class="dv">7</span>]]) </span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>ICC.L4 <span class="ot">=</span> <span class="fu">as.numeric</span>(<span class="fu">VarCorr</span>(Model<span class="fl">.1</span>)[[<span class="dv">2</span>]]) <span class="sc">/</span> total_var</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>ICC.L4</span></code></pre></div>
 <pre><code>## [1] 0.07429138</code></pre>
 </div>
 <div id="level-3-cluster" class="section level5">
 <h5>Level 3 (cluster)</h5>
-<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>ICC.L3 <span class="ot">=</span> (<span class="fu">as.numeric</span>(<span class="fu">VarCorr</span>(Model<span class="fl">.1</span>)[[<span class="dv">4</span>]])) <span class="sc">/</span> total_var</span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>ICC.L3</span></code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>ICC.L3 <span class="ot">=</span> (<span class="fu">as.numeric</span>(<span class="fu">VarCorr</span>(Model<span class="fl">.1</span>)[[<span class="dv">4</span>]])) <span class="sc">/</span> total_var</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>ICC.L3</span></code></pre></div>
 <pre><code>## [1] 0.05190086</code></pre>
 </div>
 <div id="level-2-case" class="section level5">
 <h5>Level 2 (case)</h5>
-<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>ICC.L2 <span class="ot">=</span> (<span class="fu">as.numeric</span>(<span class="fu">VarCorr</span>(Model<span class="fl">.1</span>)[[<span class="dv">6</span>]])) <span class="sc">/</span> total_var</span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="fu">format</span>(ICC.L2, <span class="at">scientific=</span><span class="cn">FALSE</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>ICC.L2 <span class="ot">=</span> (<span class="fu">as.numeric</span>(<span class="fu">VarCorr</span>(Model<span class="fl">.1</span>)[[<span class="dv">6</span>]])) <span class="sc">/</span> total_var</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="fu">format</span>(ICC.L2, <span class="at">scientific=</span><span class="cn">FALSE</span>)</span></code></pre></div>
 <pre><code>## [1] &quot;0.000002738551&quot;</code></pre>
 </div>
 <div id="level-1-repeated-measurement" class="section level5">
 <h5>Level 1 (repeated measurement)</h5>
-<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>ICC.L1 <span class="ot">=</span> (<span class="fu">as.numeric</span>(<span class="fu">VarCorr</span>(Model<span class="fl">.1</span>)[[<span class="dv">7</span>]])) <span class="sc">/</span> total_var</span>
-<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>ICC.L1</span></code></pre></div>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>ICC.L1 <span class="ot">=</span> (<span class="fu">as.numeric</span>(<span class="fu">VarCorr</span>(Model<span class="fl">.1</span>)[[<span class="dv">7</span>]])) <span class="sc">/</span> total_var</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>ICC.L1</span></code></pre></div>
 <pre><code>## [1] 0.873805</code></pre>
 </div>
 </div>
 <div id="autocorrelation-serial-correlation" class="section level4">
 <h4><strong>Autocorrelation (serial correlation)</strong></h4>
-<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">ACF</span>(Model<span class="fl">.1</span>, <span class="at">maxLag=</span><span class="dv">15</span>), <span class="at">alpha =</span> .<span class="dv">05</span>)</span></code></pre></div>
-<p><img src="index_files/figure-html/unnamed-chunk-9-1.png" width="576" /></p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">ACF</span>(Model<span class="fl">.1</span>, <span class="at">maxLag=</span><span class="dv">15</span>), <span class="at">alpha =</span> .<span class="dv">05</span>)</span></code></pre></div>
+<p><img src="index_files/figure-html/unnamed-chunk-8-1.png" width="576" /></p>
 </div>
 </div>
 <div id="model.2" class="section level3">
 <h3>Model.2</h3>
 <div id="random-coefficient-model" class="section level4">
 <h4><strong>Random-coefficient model</strong></h4>
-<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>Model<span class="fl">.2</span> <span class="ot">&lt;-</span> <span class="fu">lme</span>(outcome <span class="sc">~</span></span>
-<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>                 Time_A1_A1 <span class="sc">+</span></span>
-<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>                 B1 <span class="sc">+</span> Time_B1_B1 <span class="sc">+</span></span>
-<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>                 A2 <span class="sc">+</span> Time_A2_A2 <span class="sc">+</span></span>
-<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>                 B2 <span class="sc">+</span> Time_B2_B2 <span class="sc">+</span></span>
-<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>                 M <span class="sc">+</span> Time_M_M,</span>
-<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a>               <span class="at">data =</span> wp_data_mlm,</span>
-<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a>               <span class="at">method =</span> <span class="st">&quot;REML&quot;</span>,</span>
-<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a>               <span class="at">random =</span> <span class="sc">~</span> Time_A1_A1 <span class="sc">+</span> B1 <span class="sc">+</span> Time_B1_B1 <span class="sc">|</span> study<span class="sc">/</span>cluster<span class="sc">/</span>case,</span>
-<span id="cb15-10"><a href="#cb15-10" aria-hidden="true" tabindex="-1"></a>               <span class="at">control=</span><span class="fu">list</span>(<span class="at">maxIter=</span><span class="dv">100</span>,<span class="at">msMaxIter=</span><span class="dv">100</span>,<span class="at">tolerance=</span><span class="fl">1e-3</span>,</span>
-<span id="cb15-11"><a href="#cb15-11" aria-hidden="true" tabindex="-1"></a>                            <span class="at">opt=</span><span class="st">&quot;optim&quot;</span>,<span class="at">optimMethod=</span><span class="st">&quot;BFGS&quot;</span>))</span></code></pre></div>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>Model<span class="fl">.2</span> <span class="ot">&lt;-</span> <span class="fu">lme</span>(outcome <span class="sc">~</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>                 Time_A1_A1 <span class="sc">+</span></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>                 B1 <span class="sc">+</span> Time_B1_B1 <span class="sc">+</span></span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>                 A2 <span class="sc">+</span> Time_A2_A2 <span class="sc">+</span></span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>                 B2 <span class="sc">+</span> Time_B2_B2 <span class="sc">+</span></span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>                 M <span class="sc">+</span> Time_M_M,</span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a>               <span class="at">data =</span> wp_data_mlm,</span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a>               <span class="at">method =</span> <span class="st">&quot;REML&quot;</span>,</span>
+<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a>               <span class="at">random =</span> <span class="sc">~</span> Time_A1_A1 <span class="sc">+</span> B1 <span class="sc">+</span> Time_B1_B1 <span class="sc">|</span> study<span class="sc">/</span>cluster<span class="sc">/</span>case,</span>
+<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a>               <span class="at">control=</span><span class="fu">list</span>(<span class="at">maxIter=</span><span class="dv">100</span>,<span class="at">msMaxIter=</span><span class="dv">100</span>,<span class="at">tolerance=</span><span class="fl">1e-3</span>,</span>
+<span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a>                            <span class="at">opt=</span><span class="st">&quot;optim&quot;</span>,<span class="at">optimMethod=</span><span class="st">&quot;BFGS&quot;</span>))</span></code></pre></div>
 </div>
 <div id="cluster-robust-variance-estimation-1" class="section level4">
-<h4>Cluster-robust variance estimation</h4>
-<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">options</span>(<span class="at">width =</span> <span class="dv">100</span>)</span>
-<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>Model.<span class="fl">2.</span>vcov <span class="ot">&lt;-</span> <span class="fu">vcovCR</span>(Model<span class="fl">.2</span>, <span class="at">type =</span> <span class="st">&quot;CR2&quot;</span>)</span>
-<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>Model.<span class="fl">2.</span>crve <span class="ot">&lt;-</span> <span class="fu">coef_test</span>(Model<span class="fl">.2</span>, <span class="at">vcov =</span> Model.<span class="fl">2.</span>vcov , <span class="at">test =</span> <span class="st">&quot;Satterthwaite&quot;</span>)</span>
-<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>Model.<span class="fl">2.</span>crve</span></code></pre></div>
+<h4><strong>Cluster-robust variance estimation</strong></h4>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">options</span>(<span class="at">width =</span> <span class="dv">100</span>)</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>Model.<span class="fl">2.</span>vcov <span class="ot">&lt;-</span> <span class="fu">vcovCR</span>(Model<span class="fl">.2</span>, <span class="at">type =</span> <span class="st">&quot;CR2&quot;</span>)</span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>Model.<span class="fl">2.</span>crve <span class="ot">&lt;-</span> <span class="fu">coef_test</span>(Model<span class="fl">.2</span>, <span class="at">vcov =</span> Model.<span class="fl">2.</span>vcov , <span class="at">test =</span> <span class="st">&quot;Satterthwaite&quot;</span>)</span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>Model.<span class="fl">2.</span>crve</span></code></pre></div>
 <pre><code>##        Coef. Estimate       SE    t-stat d.f. (Satt) p-val (Satt) Sig.
 ##  (Intercept)   22.796 3.40e+00  6.71e+00       13.28       &lt;0.001  ***
 ##   Time_A1_A1   -0.126 5.49e-01 -2.29e-01       16.37       0.8218     
@@ -287894,87 +287884,40 @@ class="section level4">
 ##            M   57.518 8.09e+00  7.11e+00        6.27       &lt;0.001  ***
 ##     Time_M_M    0.523 9.31e-01  5.63e-01        3.39       0.6089</code></pre>
 </div>
-<div id="standard-errors-for-variance-components-1"
-class="section level4">
-<h4>Standard errors for variance components</h4>
-<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>Model.<span class="fl">2.</span>RandomEffect.se <span class="ot">&lt;-</span> <span class="fu">sqrt</span>(<span class="fu">diag</span>(<span class="fu">varcomp_vcov</span>(Model<span class="fl">.2</span>)))</span>
-<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>Model.<span class="fl">2.</span>RandomEffect.se</span></code></pre></div>
-<pre><code>##              Tau.study.var((Intercept))   Tau.study.cov(Time_A1_A1,(Intercept)) 
-##                             37.51919612                              7.38683601 
-##               Tau.study.var(Time_A1_A1)           Tau.study.cov(B1,(Intercept)) 
-##                              2.70448184                             60.88086250 
-##            Tau.study.cov(B1,Time_A1_A1)                       Tau.study.var(B1) 
-##                             15.75804215                            173.47292867 
-##   Tau.study.cov(Time_B1_B1,(Intercept))    Tau.study.cov(Time_B1_B1,Time_A1_A1) 
-##                             14.12337415                              3.36569288 
-##            Tau.study.cov(Time_B1_B1,B1)               Tau.study.var(Time_B1_B1) 
-##                             29.32752535                              8.09993440 
-##            Tau.cluster.var((Intercept)) Tau.cluster.cov(Time_A1_A1,(Intercept)) 
-##                             34.24575519                              3.86603616 
-##             Tau.cluster.var(Time_A1_A1)         Tau.cluster.cov(B1,(Intercept)) 
-##                              0.72818652                             33.54287498 
-##          Tau.cluster.cov(B1,Time_A1_A1)                     Tau.cluster.var(B1) 
-##                              4.74852800                             57.73458451 
-## Tau.cluster.cov(Time_B1_B1,(Intercept))  Tau.cluster.cov(Time_B1_B1,Time_A1_A1) 
-##                              1.92713775                              0.24248283 
-##          Tau.cluster.cov(Time_B1_B1,B1)             Tau.cluster.var(Time_B1_B1) 
-##                              2.50681309                              0.15768460 
-##               Tau.case.var((Intercept))    Tau.case.cov(Time_A1_A1,(Intercept)) 
-##                             16.53698174                              2.35792078 
-##                Tau.case.var(Time_A1_A1)            Tau.case.cov(B1,(Intercept)) 
-##                              0.47139639                             15.51886945 
-##             Tau.case.cov(B1,Time_A1_A1)                        Tau.case.var(B1) 
-##                              2.80811282                             23.10298814 
-##    Tau.case.cov(Time_B1_B1,(Intercept))     Tau.case.cov(Time_B1_B1,Time_A1_A1) 
-##                              0.71748582                              0.11080561 
-##             Tau.case.cov(Time_B1_B1,B1)                Tau.case.var(Time_B1_B1) 
-##                              0.90818553                              0.04499345 
-##                                sigma_sq 
-##                              7.61980596</code></pre>
-</div>
-<div id="comparing-likelihoods-of-fitted-objects"
-class="section level4">
-<h4>Comparing likelihoods of fitted objects</h4>
-<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>M1_M2 <span class="ot">&lt;-</span> <span class="fu">anova</span>(Model<span class="fl">.1</span>, Model<span class="fl">.2</span>)</span>
-<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>M1_M2</span></code></pre></div>
-<pre><code>##         Model df      AIC      BIC    logLik   Test L.Ratio p-value
-## Model.1     1  5 19965.17 19993.22 -9977.586                       
-## Model.2     2 41 17180.04 17409.84 -8549.021 1 vs 2 2857.13  &lt;.0001</code></pre>
-</div>
 </div>
 <div id="model.3" class="section level3">
 <h3>Model.3</h3>
 <div id="contextual-model-with-cross-level-interactions"
 class="section level4">
 <h4><strong>Contextual model with cross-level interactions</strong></h4>
-<div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>Model<span class="fl">.3</span> <span class="ot">&lt;-</span> <span class="fu">lme</span>(outcome <span class="sc">~</span></span>
-<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>                 Time_A1_A1 <span class="sc">+</span></span>
-<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>                 B1 <span class="sc">+</span> Time_B1_B1 <span class="sc">+</span></span>
-<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a>                 A2 <span class="sc">+</span> Time_A2_A2 <span class="sc">+</span></span>
-<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a>                 B2 <span class="sc">+</span> Time_B2_B2 <span class="sc">+</span></span>
-<span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a>                 M <span class="sc">+</span> Time_M_M <span class="sc">+</span></span>
-<span id="cb22-7"><a href="#cb22-7" aria-hidden="true" tabindex="-1"></a>                 mixed_problem <span class="sc">+</span> Time_A1_A1<span class="sc">:</span>mixed_problem <span class="sc">+</span></span>
-<span id="cb22-8"><a href="#cb22-8" aria-hidden="true" tabindex="-1"></a>                 B1<span class="sc">:</span>mixed_problem <span class="sc">+</span> Time_B1_B1<span class="sc">:</span>mixed_problem <span class="sc">+</span></span>
-<span id="cb22-9"><a href="#cb22-9" aria-hidden="true" tabindex="-1"></a>                 generalization <span class="sc">+</span> Time_A1_A1<span class="sc">:</span>generalization <span class="sc">+</span></span>
-<span id="cb22-10"><a href="#cb22-10" aria-hidden="true" tabindex="-1"></a>                 B1<span class="sc">:</span>generalization <span class="sc">+</span> Time_B1_B1<span class="sc">:</span>generalization <span class="sc">+</span></span>
-<span id="cb22-11"><a href="#cb22-11" aria-hidden="true" tabindex="-1"></a>                 withdrawal <span class="sc">+</span> Time_A1_A1<span class="sc">:</span>withdrawal <span class="sc">+</span></span>
-<span id="cb22-12"><a href="#cb22-12" aria-hidden="true" tabindex="-1"></a>                 B1<span class="sc">:</span>withdrawal <span class="sc">+</span> Time_B1_B1<span class="sc">:</span>withdrawal <span class="sc">+</span></span>
-<span id="cb22-13"><a href="#cb22-13" aria-hidden="true" tabindex="-1"></a>                 multi_base <span class="sc">+</span> Time_A1_A1<span class="sc">:</span>multi_base <span class="sc">+</span></span>
-<span id="cb22-14"><a href="#cb22-14" aria-hidden="true" tabindex="-1"></a>                 B1<span class="sc">:</span>multi_base <span class="sc">+</span> Time_B1_B1<span class="sc">:</span>multi_base <span class="sc">+</span></span>
-<span id="cb22-15"><a href="#cb22-15" aria-hidden="true" tabindex="-1"></a>                 alternating <span class="sc">+</span> Time_A1_A1<span class="sc">:</span>alternating <span class="sc">+</span></span>
-<span id="cb22-16"><a href="#cb22-16" aria-hidden="true" tabindex="-1"></a>                 B1<span class="sc">:</span>alternating <span class="sc">+</span> Time_B1_B1<span class="sc">:</span>alternating,</span>
-<span id="cb22-17"><a href="#cb22-17" aria-hidden="true" tabindex="-1"></a>               <span class="at">data =</span> wp_data_mlm,</span>
-<span id="cb22-18"><a href="#cb22-18" aria-hidden="true" tabindex="-1"></a>               <span class="at">method =</span> <span class="st">&quot;REML&quot;</span>,</span>
-<span id="cb22-19"><a href="#cb22-19" aria-hidden="true" tabindex="-1"></a>               <span class="at">random =</span> <span class="sc">~</span> Time_A1_A1 <span class="sc">+</span> B1 <span class="sc">+</span> Time_B1_B1 <span class="sc">|</span> study<span class="sc">/</span>cluster<span class="sc">/</span>case,</span>
-<span id="cb22-20"><a href="#cb22-20" aria-hidden="true" tabindex="-1"></a>               <span class="at">control=</span><span class="fu">list</span>(<span class="at">maxIter=</span><span class="dv">100</span>,<span class="at">msMaxIter=</span><span class="dv">100</span>,<span class="at">tolerance=</span><span class="fl">1e-3</span>,</span>
-<span id="cb22-21"><a href="#cb22-21" aria-hidden="true" tabindex="-1"></a>                            <span class="at">opt=</span><span class="st">&quot;optim&quot;</span>,<span class="at">optimMethod=</span><span class="st">&quot;BFGS&quot;</span>))</span></code></pre></div>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>Model<span class="fl">.3</span> <span class="ot">&lt;-</span> <span class="fu">lme</span>(outcome <span class="sc">~</span></span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>                 Time_A1_A1 <span class="sc">+</span></span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>                 B1 <span class="sc">+</span> Time_B1_B1 <span class="sc">+</span></span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>                 A2 <span class="sc">+</span> Time_A2_A2 <span class="sc">+</span></span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>                 B2 <span class="sc">+</span> Time_B2_B2 <span class="sc">+</span></span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a>                 M <span class="sc">+</span> Time_M_M <span class="sc">+</span></span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a>                 mixed_problem <span class="sc">+</span> Time_A1_A1<span class="sc">:</span>mixed_problem <span class="sc">+</span></span>
+<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a>                 B1<span class="sc">:</span>mixed_problem <span class="sc">+</span> Time_B1_B1<span class="sc">:</span>mixed_problem <span class="sc">+</span></span>
+<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a>                 generalization <span class="sc">+</span> Time_A1_A1<span class="sc">:</span>generalization <span class="sc">+</span></span>
+<span id="cb16-10"><a href="#cb16-10" aria-hidden="true" tabindex="-1"></a>                 B1<span class="sc">:</span>generalization <span class="sc">+</span> Time_B1_B1<span class="sc">:</span>generalization <span class="sc">+</span></span>
+<span id="cb16-11"><a href="#cb16-11" aria-hidden="true" tabindex="-1"></a>                 withdrawal <span class="sc">+</span> Time_A1_A1<span class="sc">:</span>withdrawal <span class="sc">+</span></span>
+<span id="cb16-12"><a href="#cb16-12" aria-hidden="true" tabindex="-1"></a>                 B1<span class="sc">:</span>withdrawal <span class="sc">+</span> Time_B1_B1<span class="sc">:</span>withdrawal <span class="sc">+</span></span>
+<span id="cb16-13"><a href="#cb16-13" aria-hidden="true" tabindex="-1"></a>                 multi_base <span class="sc">+</span> Time_A1_A1<span class="sc">:</span>multi_base <span class="sc">+</span></span>
+<span id="cb16-14"><a href="#cb16-14" aria-hidden="true" tabindex="-1"></a>                 B1<span class="sc">:</span>multi_base <span class="sc">+</span> Time_B1_B1<span class="sc">:</span>multi_base <span class="sc">+</span></span>
+<span id="cb16-15"><a href="#cb16-15" aria-hidden="true" tabindex="-1"></a>                 alternating <span class="sc">+</span> Time_A1_A1<span class="sc">:</span>alternating <span class="sc">+</span></span>
+<span id="cb16-16"><a href="#cb16-16" aria-hidden="true" tabindex="-1"></a>                 B1<span class="sc">:</span>alternating <span class="sc">+</span> Time_B1_B1<span class="sc">:</span>alternating,</span>
+<span id="cb16-17"><a href="#cb16-17" aria-hidden="true" tabindex="-1"></a>               <span class="at">data =</span> wp_data_mlm,</span>
+<span id="cb16-18"><a href="#cb16-18" aria-hidden="true" tabindex="-1"></a>               <span class="at">method =</span> <span class="st">&quot;REML&quot;</span>,</span>
+<span id="cb16-19"><a href="#cb16-19" aria-hidden="true" tabindex="-1"></a>               <span class="at">random =</span> <span class="sc">~</span> Time_A1_A1 <span class="sc">+</span> B1 <span class="sc">+</span> Time_B1_B1 <span class="sc">|</span> study<span class="sc">/</span>cluster<span class="sc">/</span>case,</span>
+<span id="cb16-20"><a href="#cb16-20" aria-hidden="true" tabindex="-1"></a>               <span class="at">control=</span><span class="fu">list</span>(<span class="at">maxIter=</span><span class="dv">100</span>,<span class="at">msMaxIter=</span><span class="dv">100</span>,<span class="at">tolerance=</span><span class="fl">1e-3</span>,</span>
+<span id="cb16-21"><a href="#cb16-21" aria-hidden="true" tabindex="-1"></a>                            <span class="at">opt=</span><span class="st">&quot;optim&quot;</span>,<span class="at">optimMethod=</span><span class="st">&quot;BFGS&quot;</span>))</span></code></pre></div>
 </div>
 <div id="cluster-robust-variance-estimation-2" class="section level4">
-<h4>Cluster-robust variance estimation</h4>
-<div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="fu">options</span>(<span class="at">width =</span> <span class="dv">100</span>)</span>
-<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>Model.<span class="fl">3.</span>vcov <span class="ot">&lt;-</span> <span class="fu">vcovCR</span>(Model<span class="fl">.3</span>, <span class="at">type =</span> <span class="st">&quot;CR2&quot;</span>)</span>
-<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>Model.<span class="fl">3.</span>crve <span class="ot">&lt;-</span> <span class="fu">coef_test</span>(Model<span class="fl">.3</span>, <span class="at">vcov =</span> Model.<span class="fl">3.</span>vcov , <span class="at">test =</span> <span class="st">&quot;Satterthwaite&quot;</span>)</span>
-<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a>Model.<span class="fl">3.</span>crve</span></code></pre></div>
+<h4><strong>Cluster-robust variance estimation</strong></h4>
+<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="fu">options</span>(<span class="at">width =</span> <span class="dv">100</span>)</span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>Model.<span class="fl">3.</span>vcov <span class="ot">&lt;-</span> <span class="fu">vcovCR</span>(Model<span class="fl">.3</span>, <span class="at">type =</span> <span class="st">&quot;CR2&quot;</span>)</span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>Model.<span class="fl">3.</span>crve <span class="ot">&lt;-</span> <span class="fu">coef_test</span>(Model<span class="fl">.3</span>, <span class="at">vcov =</span> Model.<span class="fl">3.</span>vcov , <span class="at">test =</span> <span class="st">&quot;Satterthwaite&quot;</span>)</span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>Model.<span class="fl">3.</span>crve</span></code></pre></div>
 <pre><code>##                      Coef. Estimate       SE    t-stat d.f. (Satt) p-val (Satt) Sig.
 ##                (Intercept)   26.466 3.74e+00  7.08e+00        4.87      &lt; 0.001  ***
 ##                 Time_A1_A1    1.559 1.41e+00  1.10e+00        2.77      0.35622     
@@ -288007,53 +287950,6 @@ class="section level4">
 ##             B1:alternating   43.903 1.61e+01  2.73e+00        8.38      0.02460    *
 ##     Time_B1_B1:alternating   -3.076 3.98e+00 -7.72e-01        3.08      0.49493</code></pre>
 </div>
-<div id="standard-errors-for-variance-components-2"
-class="section level4">
-<h4>Standard errors for variance components</h4>
-<div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>Model.<span class="fl">3.</span>RandomEffect.se <span class="ot">&lt;-</span> <span class="fu">sqrt</span>(<span class="fu">diag</span>(<span class="fu">varcomp_vcov</span>(Model<span class="fl">.3</span>)))</span>
-<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>Model.<span class="fl">3.</span>RandomEffect.se</span></code></pre></div>
-<pre><code>##              Tau.study.var((Intercept))   Tau.study.cov(Time_A1_A1,(Intercept)) 
-##                             42.68096913                              7.84694106 
-##               Tau.study.var(Time_A1_A1)           Tau.study.cov(B1,(Intercept)) 
-##                              2.46473385                             47.39418980 
-##            Tau.study.cov(B1,Time_A1_A1)                       Tau.study.var(B1) 
-##                             11.75892175                            101.74816430 
-##   Tau.study.cov(Time_B1_B1,(Intercept))    Tau.study.cov(Time_B1_B1,Time_A1_A1) 
-##                             15.11289591                              3.33729081 
-##            Tau.study.cov(Time_B1_B1,B1)               Tau.study.var(Time_B1_B1) 
-##                             23.21072302                              8.96924983 
-##            Tau.cluster.var((Intercept)) Tau.cluster.cov(Time_A1_A1,(Intercept)) 
-##                             36.41431948                              4.88525917 
-##             Tau.cluster.var(Time_A1_A1)         Tau.cluster.cov(B1,(Intercept)) 
-##                              1.12984985                             36.03383902 
-##          Tau.cluster.cov(B1,Time_A1_A1)                     Tau.cluster.var(B1) 
-##                              5.88250112                             58.34557673 
-## Tau.cluster.cov(Time_B1_B1,(Intercept))  Tau.cluster.cov(Time_B1_B1,Time_A1_A1) 
-##                              1.80946123                              0.29557629 
-##          Tau.cluster.cov(Time_B1_B1,B1)             Tau.cluster.var(Time_B1_B1) 
-##                              2.35562998                              0.14553403 
-##               Tau.case.var((Intercept))    Tau.case.cov(Time_A1_A1,(Intercept)) 
-##                             17.87232204                              2.56517710 
-##                Tau.case.var(Time_A1_A1)            Tau.case.cov(B1,(Intercept)) 
-##                              0.51466992                             16.48596043 
-##             Tau.case.cov(B1,Time_A1_A1)                        Tau.case.var(B1) 
-##                              2.92179495                             23.74611036 
-##    Tau.case.cov(Time_B1_B1,(Intercept))     Tau.case.cov(Time_B1_B1,Time_A1_A1) 
-##                              0.74852861                              0.11635544 
-##             Tau.case.cov(Time_B1_B1,B1)                Tau.case.var(Time_B1_B1) 
-##                              0.92247284                              0.04706954 
-##                                sigma_sq 
-##                              7.22234781</code></pre>
-</div>
-<div id="comparing-likelihoods-of-fitted-objects-1"
-class="section level4">
-<h4>Comparing likelihoods of fitted objects</h4>
-<div class="sourceCode" id="cb27"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>M2_M3 <span class="ot">&lt;-</span> <span class="fu">anova</span>(Model<span class="fl">.2</span>, Model<span class="fl">.3</span>)</span>
-<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>M2_M3</span></code></pre></div>
-<pre><code>##         Model df      AIC      BIC    logLik   Test L.Ratio p-value
-## Model.2     1 41 17180.04 17409.84 -8549.021                       
-## Model.3     2 61 17011.52 17352.81 -8444.759 1 vs 2 208.525  &lt;.0001</code></pre>
-</div>
 </div>
 <div id="model.4" class="section level3">
 <h3>Model.4</h3>
@@ -288062,15 +287958,15 @@ id="contextual-model-with-cross-level-interactions-and-ar1-correlation-structure
 class="section level4">
 <h4><strong>Contextual model with cross-level interactions and AR(1)
 correlation structure (corCAR1)</strong></h4>
-<div class="sourceCode" id="cb29"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>Model<span class="fl">.4</span> <span class="ot">&lt;-</span> <span class="fu">update</span>(Model<span class="fl">.3</span>,</span>
-<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>                  <span class="at">correlation =</span> <span class="fu">corCAR1</span>(<span class="at">value =</span> <span class="fl">0.4</span>, <span class="at">form =</span> <span class="sc">~</span> session <span class="sc">|</span> study<span class="sc">/</span>cluster<span class="sc">/</span>case))</span></code></pre></div>
+<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>Model<span class="fl">.4</span> <span class="ot">&lt;-</span> <span class="fu">update</span>(Model<span class="fl">.3</span>,</span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>                  <span class="at">correlation =</span> <span class="fu">corCAR1</span>(<span class="at">value =</span> <span class="fl">0.4</span>, <span class="at">form =</span> <span class="sc">~</span> session <span class="sc">|</span> study<span class="sc">/</span>cluster<span class="sc">/</span>case))</span></code></pre></div>
 </div>
 <div id="cluster-robust-variance-estimation-3" class="section level4">
-<h4>Cluster-robust variance estimation</h4>
-<div class="sourceCode" id="cb30"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="fu">options</span>(<span class="at">width =</span> <span class="dv">100</span>)</span>
-<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a>Model.<span class="fl">4.</span>vcov <span class="ot">&lt;-</span> <span class="fu">vcovCR</span>(Model<span class="fl">.4</span>, <span class="at">type =</span> <span class="st">&quot;CR2&quot;</span>)</span>
-<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a>Model.<span class="fl">4.</span>crve <span class="ot">&lt;-</span> <span class="fu">coef_test</span>(Model<span class="fl">.4</span>, <span class="at">vcov =</span> Model.<span class="fl">4.</span>vcov , <span class="at">test =</span> <span class="st">&quot;Satterthwaite&quot;</span>)</span>
-<span id="cb30-4"><a href="#cb30-4" aria-hidden="true" tabindex="-1"></a>Model.<span class="fl">4.</span>crve</span></code></pre></div>
+<h4><strong>Cluster-robust variance estimation</strong></h4>
+<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="fu">options</span>(<span class="at">width =</span> <span class="dv">100</span>)</span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>Model.<span class="fl">4.</span>vcov <span class="ot">&lt;-</span> <span class="fu">vcovCR</span>(Model<span class="fl">.4</span>, <span class="at">type =</span> <span class="st">&quot;CR2&quot;</span>)</span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>Model.<span class="fl">4.</span>crve <span class="ot">&lt;-</span> <span class="fu">coef_test</span>(Model<span class="fl">.4</span>, <span class="at">vcov =</span> Model.<span class="fl">4.</span>vcov , <span class="at">test =</span> <span class="st">&quot;Satterthwaite&quot;</span>)</span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a>Model.<span class="fl">4.</span>crve</span></code></pre></div>
 <pre><code>##                      Coef. Estimate     SE  t-stat d.f. (Satt) p-val (Satt) Sig.
 ##                (Intercept)   26.428  2.934  9.0082        4.33      &lt; 0.001  ***
 ##                 Time_A1_A1    1.647  1.220  1.3498        2.54      0.28475     
@@ -288103,49 +287999,11 @@ correlation structure (corCAR1)</strong></h4>
 ##             B1:alternating   40.654 15.422  2.6361        1.62      0.14739     
 ##     Time_B1_B1:alternating   -2.648  4.406 -0.6011        1.43      0.62885</code></pre>
 </div>
-<div id="standard-errors-for-variance-components-3"
+<div id="comparing-likelihoods-of-fitted-objects"
 class="section level4">
-<h4>Standard errors for variance components</h4>
-<div class="sourceCode" id="cb32"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a>Model.<span class="fl">4.</span>RandomEffect.se <span class="ot">&lt;-</span> <span class="fu">sqrt</span>(<span class="fu">diag</span>(<span class="fu">varcomp_vcov</span>(Model<span class="fl">.4</span>)))</span>
-<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a>Model.<span class="fl">4.</span>RandomEffect.se</span></code></pre></div>
-<pre><code>##              Tau.study.var((Intercept))   Tau.study.cov(Time_A1_A1,(Intercept)) 
-##                             37.76184205                              6.08946741 
-##               Tau.study.var(Time_A1_A1)           Tau.study.cov(B1,(Intercept)) 
-##                              1.80389116                             44.54075002 
-##            Tau.study.cov(B1,Time_A1_A1)                       Tau.study.var(B1) 
-##                             10.24882849                            102.83034504 
-##   Tau.study.cov(Time_B1_B1,(Intercept))    Tau.study.cov(Time_B1_B1,Time_A1_A1) 
-##                             16.48981972                              3.32780032 
-##            Tau.study.cov(Time_B1_B1,B1)               Tau.study.var(Time_B1_B1) 
-##                             27.67747016                             11.75769734 
-##            Tau.cluster.var((Intercept)) Tau.cluster.cov(Time_A1_A1,(Intercept)) 
-##                             30.62253452                              2.96250818 
-##             Tau.cluster.var(Time_A1_A1)         Tau.cluster.cov(B1,(Intercept)) 
-##                              0.49137282                             30.64724570 
-##          Tau.cluster.cov(B1,Time_A1_A1)                     Tau.cluster.var(B1) 
-##                              3.93558025                             54.84006545 
-## Tau.cluster.cov(Time_B1_B1,(Intercept))  Tau.cluster.cov(Time_B1_B1,Time_A1_A1) 
-##                              1.89006298                              0.22775171 
-##          Tau.cluster.cov(Time_B1_B1,B1)             Tau.cluster.var(Time_B1_B1) 
-##                              2.72219339                              0.18730498 
-##               Tau.case.var((Intercept))    Tau.case.cov(Time_A1_A1,(Intercept)) 
-##                             17.42835424                              2.40331831 
-##                Tau.case.var(Time_A1_A1)            Tau.case.cov(B1,(Intercept)) 
-##                              0.46275325                             16.96825863 
-##             Tau.case.cov(B1,Time_A1_A1)                        Tau.case.var(B1) 
-##                              2.91951797                             25.59020606 
-##    Tau.case.cov(Time_B1_B1,(Intercept))     Tau.case.cov(Time_B1_B1,Time_A1_A1) 
-##                              0.70997500                              0.10680858 
-##             Tau.case.cov(Time_B1_B1,B1)                Tau.case.var(Time_B1_B1) 
-##                              0.89848109                              0.04083835 
-##                              cor_params                                sigma_sq 
-##                              0.03153216                              9.97565180</code></pre>
-</div>
-<div id="comparing-likelihoods-of-fitted-objects-2"
-class="section level4">
-<h4>Comparing likelihoods of fitted objects</h4>
-<div class="sourceCode" id="cb34"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a>M3_M4 <span class="ot">&lt;-</span> <span class="fu">anova</span>(Model<span class="fl">.3</span>, Model<span class="fl">.4</span>)</span>
-<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a>M3_M4</span></code></pre></div>
+<h4><strong>Comparing likelihoods of fitted objects</strong></h4>
+<div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>M3_M4 <span class="ot">&lt;-</span> <span class="fu">anova</span>(Model<span class="fl">.3</span>, Model<span class="fl">.4</span>)</span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>M3_M4</span></code></pre></div>
 <pre><code>##         Model df      AIC      BIC    logLik   Test  L.Ratio p-value
 ## Model.3     1 61 17011.52 17352.81 -8444.759                        
 ## Model.4     2 62 16919.50 17266.38 -8397.748 1 vs 2 94.02131  &lt;.0001</code></pre>
@@ -288158,96 +288016,54 @@ id="contextual-model-with-cross-level-interactions-and-heterogenous-ar1-correlat
 class="section level4">
 <h4><strong>Contextual model with cross-level interactions and
 heterogenous AR(1) correlation structure (corCAR1)</strong></h4>
-<div class="sourceCode" id="cb36"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a>Model<span class="fl">.5</span> <span class="ot">&lt;-</span> <span class="fu">update</span>(Model<span class="fl">.4</span>, <span class="at">weights =</span> <span class="fu">varIdent</span>(<span class="at">form =</span> <span class="sc">~</span> <span class="dv">1</span> <span class="sc">|</span> design_type))</span></code></pre></div>
+<div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>Model<span class="fl">.5</span> <span class="ot">&lt;-</span> <span class="fu">update</span>(Model<span class="fl">.4</span>, <span class="at">weights =</span> <span class="fu">varIdent</span>(<span class="at">form =</span> <span class="sc">~</span> <span class="dv">1</span> <span class="sc">|</span> phase))</span></code></pre></div>
 </div>
 <div id="cluster-robust-variance-estimation-4" class="section level4">
-<h4>Cluster-robust variance estimation</h4>
-<div class="sourceCode" id="cb37"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="fu">options</span>(<span class="at">width =</span> <span class="dv">100</span>)</span>
-<span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a>Model.<span class="fl">5.</span>vcov <span class="ot">&lt;-</span> <span class="fu">vcovCR</span>(Model<span class="fl">.5</span>, <span class="at">type =</span> <span class="st">&quot;CR2&quot;</span>)</span>
-<span id="cb37-3"><a href="#cb37-3" aria-hidden="true" tabindex="-1"></a>Model.<span class="fl">5.</span>crve <span class="ot">&lt;-</span> <span class="fu">coef_test</span>(Model<span class="fl">.5</span>, <span class="at">vcov =</span> Model.<span class="fl">5.</span>vcov , <span class="at">test =</span> <span class="st">&quot;Satterthwaite&quot;</span>)</span>
-<span id="cb37-4"><a href="#cb37-4" aria-hidden="true" tabindex="-1"></a>Model.<span class="fl">5.</span>crve </span></code></pre></div>
-<pre><code>##                      Coef. Estimate     SE   t-stat d.f. (Satt) p-val (Satt) Sig.
-##                (Intercept)   24.069  4.274  5.63167        4.15      0.00439   **
-##                 Time_A1_A1    2.122  1.410  1.50561        2.43      0.24923     
-##                         B1   57.379  8.643  6.63910        6.59      &lt; 0.001  ***
-##                 Time_B1_B1    2.916  1.788  1.63065       12.24      0.12840     
-##                         A2   -4.702  9.762 -0.48171        1.83      0.68152     
-##                 Time_A2_A2    9.659  4.645  2.07949        1.06      0.27384     
-##                         B2   64.722 11.096  5.83302        4.19      0.00371   **
-##                 Time_B2_B2    0.846  0.697  1.21328        1.73      0.36473     
-##                          M   57.019  8.239  6.92033        6.58      &lt; 0.001  ***
-##                   Time_M_M    0.664  0.971  0.68427        3.50      0.53641     
-##              mixed_problem   -0.119  4.474 -0.02652        5.60      0.97976     
-##             generalization   -3.452  8.105 -0.42588        4.76      0.68875     
-##                 withdrawal  -21.234 11.657 -1.82155        1.09      0.30393     
-##                 multi_base    1.485  3.766  0.39439        2.85      0.72095     
-##                alternating  -10.175  4.191 -2.42767        1.41      0.18582     
-##   Time_A1_A1:mixed_problem   -2.312  1.426 -1.62048        3.57      0.18895     
-##           B1:mixed_problem  -14.410 17.343 -0.83090        9.45      0.42653     
-##   Time_B1_B1:mixed_problem   -0.274  1.763 -0.15528        3.33      0.88555     
-##  Time_A1_A1:generalization   -1.728  2.091 -0.82682        2.82      0.47238     
-##          B1:generalization   -0.468 13.987 -0.03344        5.16      0.97458     
-##  Time_B1_B1:generalization   -0.424  0.310 -1.36726        2.79      0.27119     
-##      Time_A1_A1:withdrawal   -2.991  3.467 -0.86254        1.43      0.50836     
-##              B1:withdrawal  -54.520 20.290 -2.68704        1.44      0.16058     
-##      Time_B1_B1:withdrawal    2.072 15.402  0.13456        1.17      0.91231     
-##      Time_A1_A1:multi_base   -0.745  1.129 -0.65996        3.04      0.55580     
-##              B1:multi_base    0.107 12.712  0.00841        3.40      0.99376     
-##      Time_B1_B1:multi_base   -0.256  2.037 -0.12575        3.06      0.90773     
-##     Time_A1_A1:alternating   -4.211  2.119 -1.98722        1.53      0.22246     
-##             B1:alternating   47.798 19.550  2.44487        1.50      0.17492     
-##     Time_B1_B1:alternating   -2.842  5.331 -0.53324        1.29      0.67114</code></pre>
+<h4><strong>Cluster-robust variance estimation</strong></h4>
+<div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="fu">options</span>(<span class="at">width =</span> <span class="dv">100</span>)</span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>Model.<span class="fl">5.</span>vcov <span class="ot">&lt;-</span> <span class="fu">vcovCR</span>(Model<span class="fl">.5</span>, <span class="at">type =</span> <span class="st">&quot;CR2&quot;</span>)</span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>Model.<span class="fl">5.</span>crve <span class="ot">&lt;-</span> <span class="fu">coef_test</span>(Model<span class="fl">.5</span>, <span class="at">vcov =</span> Model.<span class="fl">5.</span>vcov , <span class="at">test =</span> <span class="st">&quot;Satterthwaite&quot;</span>)</span>
+<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a>Model.<span class="fl">5.</span>crve </span></code></pre></div>
+<pre><code>##                      Coef. Estimate     SE  t-stat d.f. (Satt) p-val (Satt) Sig.
+##                (Intercept)  26.8115  2.892  9.2719        3.90      &lt; 0.001  ***
+##                 Time_A1_A1   1.5079  1.175  1.2831        2.32      0.31247     
+##                         B1  55.6457  9.995  5.5676        7.22      &lt; 0.001  ***
+##                 Time_B1_B1   2.7055  1.776  1.5232       12.39      0.15283     
+##                         A2  -7.3657  4.622 -1.5936        2.53      0.22554     
+##                 Time_A2_A2   2.1072  0.108 19.5945        2.60      &lt; 0.001  ***
+##                         B2  56.2862  7.909  7.1163        4.40      0.00142   **
+##                 Time_B2_B2   1.8635  1.170  1.5921        2.64      0.22189     
+##                          M  56.4428  8.441  6.6864        6.26      &lt; 0.001  ***
+##                   Time_M_M   0.7809  1.037  0.7533        3.42      0.49983     
+##              mixed_problem  -3.0666  4.239 -0.7234        6.20      0.49581     
+##             generalization  -6.5459  5.732 -1.1421        4.42      0.31143     
+##                 withdrawal -16.4804 24.419 -0.6749        1.29      0.60027     
+##                 multi_base   1.4075  3.745  0.3758        2.89      0.73291     
+##                alternating  -7.3832  8.582 -0.8604        1.65      0.49615     
+##   Time_A1_A1:mixed_problem  -1.6759  1.331 -1.2596        3.33      0.28879     
+##           B1:mixed_problem -14.2066 21.128 -0.6724        8.32      0.51956     
+##   Time_B1_B1:mixed_problem   0.0737  2.014  0.0366        3.33      0.97290     
+##  Time_A1_A1:generalization  -0.9042  1.700 -0.5319        2.15      0.64460     
+##          B1:generalization   3.9438 13.318  0.2961        5.02      0.77901     
+##  Time_B1_B1:generalization  -0.4604  0.303 -1.5195        2.69      0.23586     
+##      Time_A1_A1:withdrawal  -5.0592  2.462 -2.0547        1.51      0.21593     
+##              B1:withdrawal -57.3663 25.281 -2.2691        1.18      0.23226     
+##      Time_B1_B1:withdrawal   1.8929 23.974  0.0790        1.17      0.94834     
+##      Time_A1_A1:multi_base  -0.6402  0.990 -0.6465        2.96      0.56467     
+##              B1:multi_base   1.7196 14.681  0.1171        3.28      0.91357     
+##      Time_B1_B1:multi_base  -0.3803  2.148 -0.1771        3.04      0.87058     
+##     Time_A1_A1:alternating  -5.1328  1.209 -4.2451        1.86      0.05825    .
+##             B1:alternating  41.7423 15.518  2.6899        1.62      0.14277     
+##     Time_B1_B1:alternating  -2.7108  6.045 -0.4485        1.45      0.71174</code></pre>
 </div>
-<div id="standard-errors-for-variance-components-4"
+<div id="comparing-likelihoods-of-fitted-objects-1"
 class="section level4">
-<h4>Standard errors for variance components</h4>
-<div class="sourceCode" id="cb39"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a>Model.<span class="fl">5.</span>RandomEffect.se <span class="ot">&lt;-</span> <span class="fu">sqrt</span>(<span class="fu">diag</span>(<span class="fu">varcomp_vcov</span>(Model<span class="fl">.5</span>)))</span>
-<span id="cb39-2"><a href="#cb39-2" aria-hidden="true" tabindex="-1"></a>Model.<span class="fl">5.</span>RandomEffect.se</span></code></pre></div>
-<pre><code>##              Tau.study.var((Intercept))   Tau.study.cov(Time_A1_A1,(Intercept)) 
-##                             43.51021492                              7.50336351 
-##               Tau.study.var(Time_A1_A1)           Tau.study.cov(B1,(Intercept)) 
-##                              2.08869521                             46.06375920 
-##            Tau.study.cov(B1,Time_A1_A1)                       Tau.study.var(B1) 
-##                             10.44430127                             95.14537679 
-##   Tau.study.cov(Time_B1_B1,(Intercept))    Tau.study.cov(Time_B1_B1,Time_A1_A1) 
-##                             17.45710015                              3.50490339 
-##            Tau.study.cov(Time_B1_B1,B1)               Tau.study.var(Time_B1_B1) 
-##                             26.68831245                             11.72638126 
-##            Tau.cluster.var((Intercept)) Tau.cluster.cov(Time_A1_A1,(Intercept)) 
-##                             38.50877117                              5.07638878 
-##             Tau.cluster.var(Time_A1_A1)         Tau.cluster.cov(B1,(Intercept)) 
-##                              1.07322855                             34.25176865 
-##          Tau.cluster.cov(B1,Time_A1_A1)                     Tau.cluster.var(B1) 
-##                              5.51079355                             53.03188341 
-## Tau.cluster.cov(Time_B1_B1,(Intercept))  Tau.cluster.cov(Time_B1_B1,Time_A1_A1) 
-##                              1.96638689                              0.31640984 
-##          Tau.cluster.cov(Time_B1_B1,B1)             Tau.cluster.var(Time_B1_B1) 
-##                              2.30068089                              0.15193127 
-##               Tau.case.var((Intercept))    Tau.case.cov(Time_A1_A1,(Intercept)) 
-##                             17.04643122                              2.39171245 
-##                Tau.case.var(Time_A1_A1)            Tau.case.cov(B1,(Intercept)) 
-##                              0.47116429                             16.95875911 
-##             Tau.case.cov(B1,Time_A1_A1)                        Tau.case.var(B1) 
-##                              2.95524793                             25.87115068 
-##    Tau.case.cov(Time_B1_B1,(Intercept))     Tau.case.cov(Time_B1_B1,Time_A1_A1) 
-##                              0.71929014                              0.10923058 
-##             Tau.case.cov(Time_B1_B1,B1)                Tau.case.var(Time_B1_B1) 
-##                              0.92171407                              0.04182249 
-##                              cor_params                             var_params1 
-##                              0.03178642                              0.10314940 
-##                             var_params2                             var_params3 
-##                              0.04670918                              0.06075249 
-##                                sigma_sq 
-##                             10.75067693</code></pre>
-</div>
-<div id="comparing-likelihoods-of-fitted-objects-3"
-class="section level4">
-<h4>Comparing likelihoods of fitted objects</h4>
-<div class="sourceCode" id="cb41"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a>M4_M5 <span class="ot">&lt;-</span> <span class="fu">anova</span>(Model<span class="fl">.4</span>, Model<span class="fl">.5</span>)</span>
-<span id="cb41-2"><a href="#cb41-2" aria-hidden="true" tabindex="-1"></a>M4_M5</span></code></pre></div>
-<pre><code>##         Model df      AIC      BIC    logLik   Test  L.Ratio p-value
-## Model.4     1 62 16919.50 17266.38 -8397.748                        
-## Model.5     2 65 16899.92 17263.59 -8384.960 1 vs 2 25.57685  &lt;.0001</code></pre>
+<h4><strong>Comparing likelihoods of fitted objects</strong></h4>
+<div class="sourceCode" id="cb27"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>M4_M5 <span class="ot">&lt;-</span> <span class="fu">anova</span>(Model<span class="fl">.4</span>, Model<span class="fl">.5</span>)</span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>M4_M5</span></code></pre></div>
+<pre><code>##         Model df     AIC      BIC    logLik   Test  L.Ratio p-value
+## Model.4     1 62 16919.5 17266.38 -8397.748                        
+## Model.5     2 66 16887.0 17256.26 -8377.500 1 vs 2 40.49539  &lt;.0001</code></pre>
 </div>
 </div>
 </div>
