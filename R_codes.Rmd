@@ -227,3 +227,6 @@ M4_M5 <- anova(Model.4, Model.5)
 M4_M5
 ```
 
+```{r}
+save(wp_data_mlm, Model.1, Model.2, Model.3, Model.4, Model.5, M3_M4, M4_M5, file = "data/wp_mlm.RData")
+```
