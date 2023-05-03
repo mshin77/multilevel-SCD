@@ -57,7 +57,7 @@ wp_data_mlm_kb
 
 ```{r, eval=FALSE}
 Model.1 <- lme(outcome ~ 1,
-               data = wp_data_mlm,
+               data = wp_data_mhlm,
                method = "REML",
                random = ~ 1 | study/cluster/case,
                control=list(maxIter=100,msMaxIter=100,tolerance=1e-3,
@@ -121,7 +121,7 @@ plot(ACF(Model.1, maxLag=15), alpha = .05)
 ```{r, eval=FALSE}
 Model.2 <- lme(outcome ~
                  Time_A1_A1 +
-                 B1 + Time_B1_B1 +
+                 B1 + Time_B1_B1 +/oo
                  A2 + Time_A2_A2 +
                  B2 + Time_B2_B2 +
                  M + Time_M_M,
@@ -181,11 +181,10 @@ Model.3.crve
 
 ### Model.4
 
-#### **Contextual model with cross-level interactions and AR(1) correlation structure (corCAR1)** 
+#### **Contextual model with cross-level interactions and AR(1) correlation structure (corAR1)** 
 
 ```{r, eval=FALSE}
-Model.4 <- update(Model.3,
-                  correlation = corCAR1(value = 0.4, form = ~ session | study/cluster/case))
+Model.4 <- update(Model.3, correlation = corCAR1(value = 0.4, form = ~ session | study/cluster/case))
 ```
 
 #### **Cluster-robust variance estimation** 
@@ -206,7 +205,7 @@ M3_M4
 
 ### Model.5
 
-#### **Contextual model with cross-level interactions and heterogenous AR(1) correlation structure (corCAR1)** 
+#### **Contextual model with cross-level interactions and heterogenous AR(1) correlation structure (corAR1)** 
 
 ```{r, eval=FALSE}
 Model.5 <- update(Model.4, weights = varIdent(form = ~ 1 | phase))
@@ -227,3 +226,4 @@ Model.5.crve
 M4_M5 <- anova(Model.4, Model.5)
 M4_M5
 ```
+

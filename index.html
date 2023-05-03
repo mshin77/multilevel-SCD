@@ -6,7 +6,7 @@
     <meta name="generator" content="pandoc" />
 
     
-        <meta name="date" content="2023-04-24" />
+        <meta name="date" content="2023-05-03" />
     
     <title>Multilevel modeling of single-case data: Level changes and trends during phases moderated by complexity of outcome measures and single-case experimental designs</title>
 
@@ -192,7 +192,7 @@ measures and single-case experimental designs</h1>
         
 
       <!-- html_clean authors -->
-         <h4 class="date"><em>2023-04-24</em></h4>
+         <h4 class="date"><em>2023-05-03</em></h4>
       
       
    
@@ -287797,7 +287797,7 @@ Intervention 2
 class="section level4">
 <h4><strong>Unconditional means model or null model</strong></h4>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>Model<span class="fl">.1</span> <span class="ot">&lt;-</span> <span class="fu">lme</span>(outcome <span class="sc">~</span> <span class="dv">1</span>,</span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>               <span class="at">data =</span> wp_data_mlm,</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>               <span class="at">data =</span> wp_data_mhlm,</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>               <span class="at">method =</span> <span class="st">&quot;REML&quot;</span>,</span>
 <span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>               <span class="at">random =</span> <span class="sc">~</span> <span class="dv">1</span> <span class="sc">|</span> study<span class="sc">/</span>cluster<span class="sc">/</span>case,</span>
 <span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>               <span class="at">control=</span><span class="fu">list</span>(<span class="at">maxIter=</span><span class="dv">100</span>,<span class="at">msMaxIter=</span><span class="dv">100</span>,<span class="at">tolerance=</span><span class="fl">1e-3</span>,</span>
@@ -287856,7 +287856,7 @@ class="section level4">
 <h4><strong>Random-coefficient model</strong></h4>
 <div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>Model<span class="fl">.2</span> <span class="ot">&lt;-</span> <span class="fu">lme</span>(outcome <span class="sc">~</span></span>
 <span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>                 Time_A1_A1 <span class="sc">+</span></span>
-<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>                 B1 <span class="sc">+</span> Time_B1_B1 <span class="sc">+</span></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>                 B1 <span class="sc">+</span> Time_B1_B1 <span class="sc">+</span><span class="er">/</span>oo</span>
 <span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>                 A2 <span class="sc">+</span> Time_A2_A2 <span class="sc">+</span></span>
 <span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>                 B2 <span class="sc">+</span> Time_B2_B2 <span class="sc">+</span></span>
 <span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>                 M <span class="sc">+</span> Time_M_M,</span>
@@ -287954,12 +287954,11 @@ class="section level4">
 <div id="model.4" class="section level3">
 <h3>Model.4</h3>
 <div
-id="contextual-model-with-cross-level-interactions-and-ar1-correlation-structure-corcar1"
+id="contextual-model-with-cross-level-interactions-and-ar1-correlation-structure-corar1"
 class="section level4">
 <h4><strong>Contextual model with cross-level interactions and AR(1)
-correlation structure (corCAR1)</strong></h4>
-<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>Model<span class="fl">.4</span> <span class="ot">&lt;-</span> <span class="fu">update</span>(Model<span class="fl">.3</span>,</span>
-<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>                  <span class="at">correlation =</span> <span class="fu">corCAR1</span>(<span class="at">value =</span> <span class="fl">0.4</span>, <span class="at">form =</span> <span class="sc">~</span> session <span class="sc">|</span> study<span class="sc">/</span>cluster<span class="sc">/</span>case))</span></code></pre></div>
+correlation structure (corAR1)</strong></h4>
+<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>Model<span class="fl">.4</span> <span class="ot">&lt;-</span> <span class="fu">update</span>(Model<span class="fl">.3</span>, <span class="at">correlation =</span> <span class="fu">corCAR1</span>(<span class="at">value =</span> <span class="fl">0.4</span>, <span class="at">form =</span> <span class="sc">~</span> session <span class="sc">|</span> study<span class="sc">/</span>cluster<span class="sc">/</span>case))</span></code></pre></div>
 </div>
 <div id="cluster-robust-variance-estimation-3" class="section level4">
 <h4><strong>Cluster-robust variance estimation</strong></h4>
@@ -288012,10 +288011,10 @@ class="section level4">
 <div id="model.5" class="section level3">
 <h3>Model.5</h3>
 <div
-id="contextual-model-with-cross-level-interactions-and-heterogenous-ar1-correlation-structure-corcar1"
+id="contextual-model-with-cross-level-interactions-and-heterogenous-ar1-correlation-structure-corar1"
 class="section level4">
 <h4><strong>Contextual model with cross-level interactions and
-heterogenous AR(1) correlation structure (corCAR1)</strong></h4>
+heterogenous AR(1) correlation structure (corAR1)</strong></h4>
 <div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>Model<span class="fl">.5</span> <span class="ot">&lt;-</span> <span class="fu">update</span>(Model<span class="fl">.4</span>, <span class="at">weights =</span> <span class="fu">varIdent</span>(<span class="at">form =</span> <span class="sc">~</span> <span class="dv">1</span> <span class="sc">|</span> phase))</span></code></pre></div>
 </div>
 <div id="cluster-robust-variance-estimation-4" class="section level4">
