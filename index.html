@@ -6,11 +6,11 @@
     <meta name="generator" content="pandoc" />
 
     
-        <meta name="date" content="2023-05-03" />
+        <meta name="date" content="2023-05-04" />
     
     <title>Multilevel modeling of single-case data: Level changes and trends during phases moderated by complexity of outcome measures and single-case experimental designs</title>
 
-        <script src="index_files/header-attrs-2.21/header-attrs.js"></script>
+        <script src="index_files/header-attrs-2.20/header-attrs.js"></script>
         <script src="index_files/jquery-3.6.0/jquery-3.6.0.min.js"></script>
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link href="index_files/bootstrap-3.3.7/css/bootstrap.min.css" rel="stylesheet" />
@@ -192,7 +192,7 @@ measures and single-case experimental designs</h1>
         
 
       <!-- html_clean authors -->
-         <h4 class="date"><em>2023-05-03</em></h4>
+         <h4 class="date"><em>2023-05-04</em></h4>
       
       
    
@@ -287871,18 +287871,21 @@ class="section level4">
 <div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">options</span>(<span class="at">width =</span> <span class="dv">100</span>)</span>
 <span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>Model.<span class="fl">2.</span>vcov <span class="ot">&lt;-</span> <span class="fu">vcovCR</span>(Model<span class="fl">.2</span>, <span class="at">type =</span> <span class="st">&quot;CR2&quot;</span>)</span>
 <span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>Model.<span class="fl">2.</span>crve <span class="ot">&lt;-</span> <span class="fu">coef_test</span>(Model<span class="fl">.2</span>, <span class="at">vcov =</span> Model.<span class="fl">2.</span>vcov , <span class="at">test =</span> <span class="st">&quot;Satterthwaite&quot;</span>)</span>
-<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>Model.<span class="fl">2.</span>crve</span></code></pre></div>
-<pre><code>##        Coef. Estimate       SE    t-stat d.f. (Satt) p-val (Satt) Sig.
-##  (Intercept)   22.796 3.40e+00  6.71e+00       13.28       &lt;0.001  ***
-##   Time_A1_A1   -0.126 5.49e-01 -2.29e-01       16.37       0.8218     
-##           B1   48.665 6.59e+00  7.39e+00       17.65       &lt;0.001  ***
-##   Time_B1_B1    2.036 1.11e+00  1.83e+00       17.77       0.0846    .
-##           A2   -5.371 4.01e+00 -1.34e+00        4.42       0.2448     
-##   Time_A2_A2    0.833 2.25e-07  3.70e+06        1.00       &lt;0.001  ***
-##           B2   58.357 7.28e+00  8.02e+00        4.96       &lt;0.001  ***
-##   Time_B2_B2    1.707 1.20e+00  1.43e+00        2.43       0.2689     
-##            M   57.518 8.09e+00  7.11e+00        6.27       &lt;0.001  ***
-##     Time_M_M    0.523 9.31e-01  5.63e-01        3.39       0.6089</code></pre>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>Model.<span class="fl">2.</span>crve<span class="sc">$</span>beta <span class="ot">&lt;-</span> <span class="fu">round</span>(Model.<span class="fl">2.</span>crve<span class="sc">$</span>beta, <span class="dv">2</span>)</span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>Model.<span class="fl">2.</span>crve<span class="sc">$</span>SE <span class="ot">&lt;-</span> <span class="fu">round</span>(Model.<span class="fl">2.</span>crve<span class="sc">$</span>SE, <span class="dv">2</span>)</span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>Model.<span class="fl">2.</span>crve<span class="sc">$</span>tstat <span class="ot">&lt;-</span> <span class="fu">round</span>(Model.<span class="fl">2.</span>crve<span class="sc">$</span>tstat, <span class="dv">2</span>) <span class="sc">%&gt;%</span> <span class="fu">format</span>(Model.<span class="fl">2.</span>crve<span class="sc">$</span>tstat, <span class="at">scientific =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a>Model.<span class="fl">2.</span>crve </span></code></pre></div>
+<pre><code>##        Coef. Estimate   SE     t-stat d.f. (Satt) p-val (Satt) Sig.
+##  (Intercept)    22.80 3.40       6.71       13.28       &lt;0.001  ***
+##   Time_A1_A1    -0.13 0.55      -0.23       16.37       0.8218     
+##           B1    48.66 6.59       7.39       17.65       &lt;0.001  ***
+##   Time_B1_B1     2.04 1.11       1.83       17.77       0.0846    .
+##           A2    -5.37 4.01      -1.34        4.42       0.2448     
+##   Time_A2_A2     0.83 0.00 3698932.11        1.00       &lt;0.001  ***
+##           B2    58.36 7.28       8.02        4.96       &lt;0.001  ***
+##   Time_B2_B2     1.71 1.20       1.43        2.43       0.2689     
+##            M    57.52 8.09       7.11        6.27       &lt;0.001  ***
+##     Time_M_M     0.52 0.93       0.56        3.39       0.6089</code></pre>
 </div>
 </div>
 <div id="model.3" class="section level3">
@@ -287917,38 +287920,41 @@ class="section level4">
 <div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="fu">options</span>(<span class="at">width =</span> <span class="dv">100</span>)</span>
 <span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>Model.<span class="fl">3.</span>vcov <span class="ot">&lt;-</span> <span class="fu">vcovCR</span>(Model<span class="fl">.3</span>, <span class="at">type =</span> <span class="st">&quot;CR2&quot;</span>)</span>
 <span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>Model.<span class="fl">3.</span>crve <span class="ot">&lt;-</span> <span class="fu">coef_test</span>(Model<span class="fl">.3</span>, <span class="at">vcov =</span> Model.<span class="fl">3.</span>vcov , <span class="at">test =</span> <span class="st">&quot;Satterthwaite&quot;</span>)</span>
-<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>Model.<span class="fl">3.</span>crve</span></code></pre></div>
-<pre><code>##                      Coef. Estimate       SE    t-stat d.f. (Satt) p-val (Satt) Sig.
-##                (Intercept)   26.466 3.74e+00  7.08e+00        4.87      &lt; 0.001  ***
-##                 Time_A1_A1    1.559 1.41e+00  1.10e+00        2.77      0.35622     
-##                         B1   58.476 9.65e+00  6.06e+00        7.12      &lt; 0.001  ***
-##                 Time_B1_B1    2.339 1.56e+00  1.50e+00       12.20      0.16018     
-##                         A2   -7.383 4.93e+00 -1.50e+00        5.06      0.19393     
-##                 Time_A2_A2    0.833 6.38e-08  1.31e+07        1.00      &lt; 0.001  ***
-##                         B2   57.035 8.05e+00  7.08e+00        4.31      0.00158   **
-##                 Time_B2_B2    1.851 1.31e+00  1.42e+00        2.44      0.27076     
-##                          M   57.415 8.21e+00  7.00e+00        6.12      &lt; 0.001  ***
-##                   Time_M_M    0.563 9.47e-01  5.95e-01        3.27      0.59045     
-##              mixed_problem   -3.785 4.40e+00 -8.60e-01        5.31      0.42676     
-##             generalization   -5.029 9.75e+00 -5.16e-01        4.73      0.62899     
-##                 withdrawal  -14.687 5.54e+00 -2.65e+00        2.06      0.11438     
-##                 multi_base    2.489 3.95e+00  6.30e-01        2.86      0.57559     
-##                alternating   -7.714 1.01e+01 -7.63e-01        8.81      0.46522     
-##   Time_A1_A1:mixed_problem   -1.579 1.55e+00 -1.02e+00        4.00      0.36502     
-##           B1:mixed_problem  -17.722 1.97e+01 -9.00e-01        8.02      0.39415     
-##   Time_B1_B1:mixed_problem    0.645 1.80e+00  3.58e-01        3.17      0.74292     
-##  Time_A1_A1:generalization   -1.415 2.38e+00 -5.94e-01        2.71      0.59841     
-##          B1:generalization   -4.381 1.70e+01 -2.58e-01        5.66      0.80586     
-##  Time_B1_B1:generalization   -0.296 3.45e-01 -8.58e-01        2.96      0.45475     
-##      Time_A1_A1:withdrawal   -4.110 3.01e+00 -1.37e+00        6.45      0.21729     
-##              B1:withdrawal  -56.410 1.32e+01 -4.27e+00        2.39      0.03670    *
-##      Time_B1_B1:withdrawal    1.379 1.91e+00  7.23e-01        1.10      0.59226     
-##      Time_A1_A1:multi_base   -0.962 1.21e+00 -7.96e-01        3.09      0.48258     
-##              B1:multi_base    2.536 1.39e+01  1.82e-01        3.33      0.86619     
-##      Time_B1_B1:multi_base   -0.550 1.92e+00 -2.86e-01        3.08      0.79323     
-##     Time_A1_A1:alternating   -4.969 1.33e+00 -3.73e+00       10.56      0.00356   **
-##             B1:alternating   43.903 1.61e+01  2.73e+00        8.38      0.02460    *
-##     Time_B1_B1:alternating   -3.076 3.98e+00 -7.72e-01        3.08      0.49493</code></pre>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>Model.<span class="fl">3.</span>crve<span class="sc">$</span>beta <span class="ot">&lt;-</span> <span class="fu">round</span>(Model.<span class="fl">3.</span>crve<span class="sc">$</span>beta, <span class="dv">2</span>)</span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>Model.<span class="fl">3.</span>crve<span class="sc">$</span>SE <span class="ot">&lt;-</span> <span class="fu">round</span>(Model.<span class="fl">3.</span>crve<span class="sc">$</span>SE, <span class="dv">2</span>)</span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a>Model.<span class="fl">3.</span>crve<span class="sc">$</span>tstat <span class="ot">&lt;-</span> <span class="fu">round</span>(Model.<span class="fl">3.</span>crve<span class="sc">$</span>tstat, <span class="dv">2</span>) <span class="sc">%&gt;%</span> <span class="fu">format</span>(Model.<span class="fl">3.</span>crve<span class="sc">$</span>tstat, <span class="at">scientific =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a>Model.<span class="fl">3.</span>crve </span></code></pre></div>
+<pre><code>##                      Coef. Estimate    SE      t-stat d.f. (Satt) p-val (Satt) Sig.
+##                (Intercept)    26.47  3.74        7.08        4.87      &lt; 0.001  ***
+##                 Time_A1_A1     1.56  1.41        1.10        2.77      0.35622     
+##                         B1    58.48  9.65        6.06        7.12      &lt; 0.001  ***
+##                 Time_B1_B1     2.34  1.56        1.50       12.20      0.16018     
+##                         A2    -7.38  4.93       -1.50        5.06      0.19393     
+##                 Time_A2_A2     0.83  0.00 13062552.60        1.00      &lt; 0.001  ***
+##                         B2    57.03  8.05        7.08        4.31      0.00158   **
+##                 Time_B2_B2     1.85  1.31        1.42        2.44      0.27076     
+##                          M    57.41  8.21        7.00        6.12      &lt; 0.001  ***
+##                   Time_M_M     0.56  0.95        0.60        3.27      0.59045     
+##              mixed_problem    -3.79  4.40       -0.86        5.31      0.42676     
+##             generalization    -5.03  9.75       -0.52        4.73      0.62899     
+##                 withdrawal   -14.69  5.54       -2.65        2.06      0.11438     
+##                 multi_base     2.49  3.95        0.63        2.86      0.57559     
+##                alternating    -7.71 10.11       -0.76        8.81      0.46522     
+##   Time_A1_A1:mixed_problem    -1.58  1.55       -1.02        4.00      0.36502     
+##           B1:mixed_problem   -17.72 19.68       -0.90        8.02      0.39415     
+##   Time_B1_B1:mixed_problem     0.64  1.80        0.36        3.17      0.74292     
+##  Time_A1_A1:generalization    -1.41  2.38       -0.59        2.71      0.59841     
+##          B1:generalization    -4.38 17.01       -0.26        5.66      0.80586     
+##  Time_B1_B1:generalization    -0.30  0.35       -0.86        2.96      0.45475     
+##      Time_A1_A1:withdrawal    -4.11  3.01       -1.37        6.45      0.21729     
+##              B1:withdrawal   -56.41 13.22       -4.27        2.39      0.03670    *
+##      Time_B1_B1:withdrawal     1.38  1.91        0.72        1.10      0.59226     
+##      Time_A1_A1:multi_base    -0.96  1.21       -0.80        3.09      0.48258     
+##              B1:multi_base     2.54 13.94        0.18        3.33      0.86619     
+##      Time_B1_B1:multi_base    -0.55  1.92       -0.29        3.08      0.79323     
+##     Time_A1_A1:alternating    -4.97  1.33       -3.73       10.56      0.00356   **
+##             B1:alternating    43.90 16.06        2.73        8.38      0.02460    *
+##     Time_B1_B1:alternating    -3.08  3.98       -0.77        3.08      0.49493</code></pre>
 </div>
 </div>
 <div id="model.4" class="section level3">
@@ -287965,38 +287971,41 @@ correlation structure (corAR1)</strong></h4>
 <div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="fu">options</span>(<span class="at">width =</span> <span class="dv">100</span>)</span>
 <span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>Model.<span class="fl">4.</span>vcov <span class="ot">&lt;-</span> <span class="fu">vcovCR</span>(Model<span class="fl">.4</span>, <span class="at">type =</span> <span class="st">&quot;CR2&quot;</span>)</span>
 <span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>Model.<span class="fl">4.</span>crve <span class="ot">&lt;-</span> <span class="fu">coef_test</span>(Model<span class="fl">.4</span>, <span class="at">vcov =</span> Model.<span class="fl">4.</span>vcov , <span class="at">test =</span> <span class="st">&quot;Satterthwaite&quot;</span>)</span>
-<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a>Model.<span class="fl">4.</span>crve</span></code></pre></div>
-<pre><code>##                      Coef. Estimate     SE  t-stat d.f. (Satt) p-val (Satt) Sig.
-##                (Intercept)   26.428  2.934  9.0082        4.33      &lt; 0.001  ***
-##                 Time_A1_A1    1.647  1.220  1.3498        2.54      0.28475     
-##                         B1   55.699  8.752  6.3645        6.98      &lt; 0.001  ***
-##                 Time_B1_B1    2.794  1.755  1.5917       12.26      0.13689     
-##                         A2   -8.757  7.600 -1.1523        2.59      0.34436     
-##                 Time_A2_A2    9.012  4.588  1.9643        1.24      0.25997     
-##                         B2   57.282  7.601  7.5362        4.39      0.00114   **
-##                 Time_B2_B2    1.657  1.192  1.3910        2.63      0.27031     
-##                          M   56.455  8.317  6.7878        6.43      &lt; 0.001  ***
-##                   Time_M_M    0.697  0.968  0.7205        3.49      0.51657     
-##              mixed_problem   -2.324  4.058 -0.5726        6.03      0.58762     
-##             generalization   -6.480  6.407 -1.0114        4.75      0.36052     
-##                 withdrawal  -17.453 15.282 -1.1421        1.40      0.41168     
-##                 multi_base    1.258  3.584  0.3509        2.85      0.74999     
-##                alternating   -6.337  4.396 -1.4414        1.60      0.31457     
-##   Time_A1_A1:mixed_problem   -1.840  1.410 -1.3049        3.38      0.27361     
-##           B1:mixed_problem  -13.714 17.956 -0.7637        9.22      0.46412     
-##   Time_B1_B1:mixed_problem   -0.100  1.772 -0.0567        3.33      0.95805     
-##  Time_A1_A1:generalization   -0.924  1.782 -0.5183        2.18      0.65210     
-##          B1:generalization    2.767 13.386  0.2067        4.89      0.84459     
-##  Time_B1_B1:generalization   -0.432  0.314 -1.3765        2.78      0.26915     
-##      Time_A1_A1:withdrawal   -4.749  2.211 -2.1476        1.88      0.17276     
-##              B1:withdrawal  -57.388 21.909 -2.6194        1.42      0.16829     
-##      Time_B1_B1:withdrawal    2.009 19.992  0.1005        1.18      0.93422     
-##      Time_A1_A1:multi_base   -0.629  1.071 -0.5871        2.98      0.59861     
-##              B1:multi_base    0.954 13.001  0.0734        3.33      0.94567     
-##      Time_B1_B1:multi_base   -0.303  2.049 -0.1481        3.06      0.89151     
-##     Time_A1_A1:alternating   -5.489  1.734 -3.1653        1.64      0.11196     
-##             B1:alternating   40.654 15.422  2.6361        1.62      0.14739     
-##     Time_B1_B1:alternating   -2.648  4.406 -0.6011        1.43      0.62885</code></pre>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a>Model.<span class="fl">4.</span>crve<span class="sc">$</span>beta <span class="ot">&lt;-</span> <span class="fu">round</span>(Model.<span class="fl">4.</span>crve<span class="sc">$</span>beta, <span class="dv">2</span>)</span>
+<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a>Model.<span class="fl">4.</span>crve<span class="sc">$</span>SE <span class="ot">&lt;-</span> <span class="fu">round</span>(Model.<span class="fl">4.</span>crve<span class="sc">$</span>SE, <span class="dv">2</span>)</span>
+<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a>Model.<span class="fl">4.</span>crve<span class="sc">$</span>tstat <span class="ot">&lt;-</span> <span class="fu">round</span>(Model.<span class="fl">4.</span>crve<span class="sc">$</span>tstat, <span class="dv">2</span>) <span class="sc">%&gt;%</span> <span class="fu">format</span>(Model.<span class="fl">4.</span>crve<span class="sc">$</span>tstat, <span class="at">scientific =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a>Model.<span class="fl">4.</span>crve </span></code></pre></div>
+<pre><code>##                      Coef. Estimate    SE t-stat d.f. (Satt) p-val (Satt) Sig.
+##                (Intercept)    26.43  2.93   9.01        4.33      &lt; 0.001  ***
+##                 Time_A1_A1     1.65  1.22   1.35        2.54      0.28475     
+##                         B1    55.70  8.75   6.36        6.98      &lt; 0.001  ***
+##                 Time_B1_B1     2.79  1.76   1.59       12.26      0.13689     
+##                         A2    -8.76  7.60  -1.15        2.59      0.34436     
+##                 Time_A2_A2     9.01  4.59   1.96        1.24      0.25997     
+##                         B2    57.28  7.60   7.54        4.39      0.00114   **
+##                 Time_B2_B2     1.66  1.19   1.39        2.63      0.27031     
+##                          M    56.45  8.32   6.79        6.43      &lt; 0.001  ***
+##                   Time_M_M     0.70  0.97   0.72        3.49      0.51657     
+##              mixed_problem    -2.32  4.06  -0.57        6.03      0.58762     
+##             generalization    -6.48  6.41  -1.01        4.75      0.36052     
+##                 withdrawal   -17.45 15.28  -1.14        1.40      0.41168     
+##                 multi_base     1.26  3.58   0.35        2.85      0.74999     
+##                alternating    -6.34  4.40  -1.44        1.60      0.31457     
+##   Time_A1_A1:mixed_problem    -1.84  1.41  -1.30        3.38      0.27361     
+##           B1:mixed_problem   -13.71 17.96  -0.76        9.22      0.46412     
+##   Time_B1_B1:mixed_problem    -0.10  1.77  -0.06        3.33      0.95805     
+##  Time_A1_A1:generalization    -0.92  1.78  -0.52        2.18      0.65210     
+##          B1:generalization     2.77 13.39   0.21        4.89      0.84459     
+##  Time_B1_B1:generalization    -0.43  0.31  -1.38        2.78      0.26915     
+##      Time_A1_A1:withdrawal    -4.75  2.21  -2.15        1.88      0.17276     
+##              B1:withdrawal   -57.39 21.91  -2.62        1.42      0.16829     
+##      Time_B1_B1:withdrawal     2.01 19.99   0.10        1.18      0.93422     
+##      Time_A1_A1:multi_base    -0.63  1.07  -0.59        2.98      0.59861     
+##              B1:multi_base     0.95 13.00   0.07        3.33      0.94567     
+##      Time_B1_B1:multi_base    -0.30  2.05  -0.15        3.06      0.89151     
+##     Time_A1_A1:alternating    -5.49  1.73  -3.17        1.64      0.11196     
+##             B1:alternating    40.65 15.42   2.64        1.62      0.14739     
+##     Time_B1_B1:alternating    -2.65  4.41  -0.60        1.43      0.62885</code></pre>
 </div>
 <div id="comparing-likelihoods-of-fitted-objects"
 class="section level4">
@@ -288022,38 +288031,41 @@ heterogenous AR(1) correlation structure (corAR1)</strong></h4>
 <div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="fu">options</span>(<span class="at">width =</span> <span class="dv">100</span>)</span>
 <span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>Model.<span class="fl">5.</span>vcov <span class="ot">&lt;-</span> <span class="fu">vcovCR</span>(Model<span class="fl">.5</span>, <span class="at">type =</span> <span class="st">&quot;CR2&quot;</span>)</span>
 <span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>Model.<span class="fl">5.</span>crve <span class="ot">&lt;-</span> <span class="fu">coef_test</span>(Model<span class="fl">.5</span>, <span class="at">vcov =</span> Model.<span class="fl">5.</span>vcov , <span class="at">test =</span> <span class="st">&quot;Satterthwaite&quot;</span>)</span>
-<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a>Model.<span class="fl">5.</span>crve </span></code></pre></div>
-<pre><code>##                      Coef. Estimate     SE  t-stat d.f. (Satt) p-val (Satt) Sig.
-##                (Intercept)  26.8115  2.892  9.2719        3.90      &lt; 0.001  ***
-##                 Time_A1_A1   1.5079  1.175  1.2831        2.32      0.31247     
-##                         B1  55.6457  9.995  5.5676        7.22      &lt; 0.001  ***
-##                 Time_B1_B1   2.7055  1.776  1.5232       12.39      0.15283     
-##                         A2  -7.3657  4.622 -1.5936        2.53      0.22554     
-##                 Time_A2_A2   2.1072  0.108 19.5945        2.60      &lt; 0.001  ***
-##                         B2  56.2862  7.909  7.1163        4.40      0.00142   **
-##                 Time_B2_B2   1.8635  1.170  1.5921        2.64      0.22189     
-##                          M  56.4428  8.441  6.6864        6.26      &lt; 0.001  ***
-##                   Time_M_M   0.7809  1.037  0.7533        3.42      0.49983     
-##              mixed_problem  -3.0666  4.239 -0.7234        6.20      0.49581     
-##             generalization  -6.5459  5.732 -1.1421        4.42      0.31143     
-##                 withdrawal -16.4804 24.419 -0.6749        1.29      0.60027     
-##                 multi_base   1.4075  3.745  0.3758        2.89      0.73291     
-##                alternating  -7.3832  8.582 -0.8604        1.65      0.49615     
-##   Time_A1_A1:mixed_problem  -1.6759  1.331 -1.2596        3.33      0.28879     
-##           B1:mixed_problem -14.2066 21.128 -0.6724        8.32      0.51956     
-##   Time_B1_B1:mixed_problem   0.0737  2.014  0.0366        3.33      0.97290     
-##  Time_A1_A1:generalization  -0.9042  1.700 -0.5319        2.15      0.64460     
-##          B1:generalization   3.9438 13.318  0.2961        5.02      0.77901     
-##  Time_B1_B1:generalization  -0.4604  0.303 -1.5195        2.69      0.23586     
-##      Time_A1_A1:withdrawal  -5.0592  2.462 -2.0547        1.51      0.21593     
-##              B1:withdrawal -57.3663 25.281 -2.2691        1.18      0.23226     
-##      Time_B1_B1:withdrawal   1.8929 23.974  0.0790        1.17      0.94834     
-##      Time_A1_A1:multi_base  -0.6402  0.990 -0.6465        2.96      0.56467     
-##              B1:multi_base   1.7196 14.681  0.1171        3.28      0.91357     
-##      Time_B1_B1:multi_base  -0.3803  2.148 -0.1771        3.04      0.87058     
-##     Time_A1_A1:alternating  -5.1328  1.209 -4.2451        1.86      0.05825    .
-##             B1:alternating  41.7423 15.518  2.6899        1.62      0.14277     
-##     Time_B1_B1:alternating  -2.7108  6.045 -0.4485        1.45      0.71174</code></pre>
+<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a>Model.<span class="fl">5.</span>crve<span class="sc">$</span>beta <span class="ot">&lt;-</span> <span class="fu">round</span>(Model.<span class="fl">5.</span>crve<span class="sc">$</span>beta, <span class="dv">2</span>)</span>
+<span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a>Model.<span class="fl">5.</span>crve<span class="sc">$</span>SE <span class="ot">&lt;-</span> <span class="fu">round</span>(Model.<span class="fl">5.</span>crve<span class="sc">$</span>SE, <span class="dv">2</span>)</span>
+<span id="cb25-6"><a href="#cb25-6" aria-hidden="true" tabindex="-1"></a>Model.<span class="fl">5.</span>crve<span class="sc">$</span>tstat <span class="ot">&lt;-</span> <span class="fu">round</span>(Model.<span class="fl">5.</span>crve<span class="sc">$</span>tstat, <span class="dv">2</span>) <span class="sc">%&gt;%</span> <span class="fu">format</span>(Model.<span class="fl">5.</span>crve<span class="sc">$</span>tstat, <span class="at">scientific =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb25-7"><a href="#cb25-7" aria-hidden="true" tabindex="-1"></a>Model.<span class="fl">5.</span>crve </span></code></pre></div>
+<pre><code>##                      Coef. Estimate    SE t-stat d.f. (Satt) p-val (Satt) Sig.
+##                (Intercept)    26.81  2.89   9.27        3.90      &lt; 0.001  ***
+##                 Time_A1_A1     1.51  1.18   1.28        2.32      0.31247     
+##                         B1    55.65  9.99   5.57        7.22      &lt; 0.001  ***
+##                 Time_B1_B1     2.71  1.78   1.52       12.39      0.15283     
+##                         A2    -7.37  4.62  -1.59        2.53      0.22554     
+##                 Time_A2_A2     2.11  0.11  19.59        2.60      &lt; 0.001  ***
+##                         B2    56.29  7.91   7.12        4.40      0.00142   **
+##                 Time_B2_B2     1.86  1.17   1.59        2.64      0.22189     
+##                          M    56.44  8.44   6.69        6.26      &lt; 0.001  ***
+##                   Time_M_M     0.78  1.04   0.75        3.42      0.49983     
+##              mixed_problem    -3.07  4.24  -0.72        6.20      0.49581     
+##             generalization    -6.55  5.73  -1.14        4.42      0.31143     
+##                 withdrawal   -16.48 24.42  -0.67        1.29      0.60027     
+##                 multi_base     1.41  3.74   0.38        2.89      0.73291     
+##                alternating    -7.38  8.58  -0.86        1.65      0.49615     
+##   Time_A1_A1:mixed_problem    -1.68  1.33  -1.26        3.33      0.28879     
+##           B1:mixed_problem   -14.21 21.13  -0.67        8.32      0.51956     
+##   Time_B1_B1:mixed_problem     0.07  2.01   0.04        3.33      0.97290     
+##  Time_A1_A1:generalization    -0.90  1.70  -0.53        2.15      0.64460     
+##          B1:generalization     3.94 13.32   0.30        5.02      0.77901     
+##  Time_B1_B1:generalization    -0.46  0.30  -1.52        2.69      0.23586     
+##      Time_A1_A1:withdrawal    -5.06  2.46  -2.05        1.51      0.21593     
+##              B1:withdrawal   -57.37 25.28  -2.27        1.18      0.23226     
+##      Time_B1_B1:withdrawal     1.89 23.97   0.08        1.17      0.94834     
+##      Time_A1_A1:multi_base    -0.64  0.99  -0.65        2.96      0.56467     
+##              B1:multi_base     1.72 14.68   0.12        3.28      0.91357     
+##      Time_B1_B1:multi_base    -0.38  2.15  -0.18        3.04      0.87058     
+##     Time_A1_A1:alternating    -5.13  1.21  -4.25        1.86      0.05825    .
+##             B1:alternating    41.74 15.52   2.69        1.62      0.14277     
+##     Time_B1_B1:alternating    -2.71  6.04  -0.45        1.45      0.71174</code></pre>
 </div>
 <div id="comparing-likelihoods-of-fitted-objects-1"
 class="section level4">
