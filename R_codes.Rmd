@@ -187,10 +187,6 @@ Model.3.crve$beta <- round(Model.3.crve$beta, 2)
 Model.3.crve$SE <- round(Model.3.crve$SE, 2)
 Model.3.crve$tstat <- round(Model.3.crve$tstat, 2) %>% format(Model.3.crve$tstat, scientific = FALSE)
 Model.3.crve 
-
-Model.3.crve$Estimate2 <- paste(Model.3.crve$Estimate, Model.3.crve$SE, sep = " ")
-Model.3.crve %>% tibble()
-write.csv(Model.3.crve, file = "Model.3.crve.csv")
 ```
 ```{r, fig.width=6, fig.height=4}
 plot(ACF(Model.3, maxLag=15), alpha = .05)

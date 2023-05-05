@@ -287957,24 +287957,7 @@ class="section level4">
 ##     Time_A1_A1:alternating    -4.97  1.33       -3.73       10.56      0.00356   **
 ##             B1:alternating    43.90 16.06        2.73        8.38      0.02460    *
 ##     Time_B1_B1:alternating    -3.08  3.98       -0.77        3.08      0.49493</code></pre>
-<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>Model.<span class="fl">3.</span>crve<span class="sc">$</span>Estimate2 <span class="ot">&lt;-</span> <span class="fu">paste</span>(Model.<span class="fl">3.</span>crve<span class="sc">$</span>Estimate, Model.<span class="fl">3.</span>crve<span class="sc">$</span>SE, <span class="at">sep =</span> <span class="st">&quot; &quot;</span>)</span>
-<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>Model.<span class="fl">3.</span>crve <span class="sc">%&gt;%</span> <span class="fu">tibble</span>()</span></code></pre></div>
-<pre><code>## # A tibble: 30 × 7
-##    Coef         beta    SE tstat       df_Satt       p_Satt Estimate2
-##    &lt;chr&gt;       &lt;dbl&gt; &lt;dbl&gt; &lt;chr&gt;         &lt;dbl&gt;        &lt;dbl&gt; &lt;chr&gt;    
-##  1 (Intercept) 26.5   3.74 7.08           4.87 0.000974     &quot; 3.74&quot;  
-##  2 Time_A1_A1   1.56  1.41 1.10           2.77 0.356        &quot; 1.41&quot;  
-##  3 B1          58.5   9.65 6.06           7.12 0.000479     &quot; 9.65&quot;  
-##  4 Time_B1_B1   2.34  1.56 1.50          12.2  0.160        &quot; 1.56&quot;  
-##  5 A2          -7.38  4.93 -1.50          5.06 0.194        &quot; 4.93&quot;  
-##  6 Time_A2_A2   0.83  0    13062552.60    1    0.0000000487 &quot; 0&quot;     
-##  7 B2          57.0   8.05 7.08           4.31 0.00158      &quot; 8.05&quot;  
-##  8 Time_B2_B2   1.85  1.31 1.42           2.44 0.271        &quot; 1.31&quot;  
-##  9 M           57.4   8.21 7.00           6.12 0.000389     &quot; 8.21&quot;  
-## 10 Time_M_M     0.56  0.95 0.60           3.27 0.590        &quot; 0.95&quot;  
-## # … with 20 more rows</code></pre>
-<div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="fu">write.csv</span>(Model.<span class="fl">3.</span>crve, <span class="at">file =</span> <span class="st">&quot;Model.3.crve.csv&quot;</span>)</span></code></pre></div>
-<div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">ACF</span>(Model<span class="fl">.3</span>, <span class="at">maxLag=</span><span class="dv">15</span>), <span class="at">alpha =</span> .<span class="dv">05</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">ACF</span>(Model<span class="fl">.3</span>, <span class="at">maxLag=</span><span class="dv">15</span>), <span class="at">alpha =</span> .<span class="dv">05</span>)</span></code></pre></div>
 <p><img src="index_files/figure-html/unnamed-chunk-14-1.png" width="576" /></p>
 </div>
 </div>
@@ -287985,17 +287968,17 @@ id="contextual-model-with-cross-level-interactions-and-ar1-correlation-structure
 class="section level4">
 <h4><strong>Contextual model with cross-level interactions and AR(1)
 correlation structure (corCAR1)</strong></h4>
-<div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>Model<span class="fl">.4</span> <span class="ot">&lt;-</span> <span class="fu">update</span>(Model<span class="fl">.3</span>, <span class="at">correlation =</span> <span class="fu">corCAR1</span>(<span class="at">value =</span> <span class="fl">0.4</span>, <span class="at">form =</span> <span class="sc">~</span> session <span class="sc">|</span> study<span class="sc">/</span>cluster<span class="sc">/</span>case))</span></code></pre></div>
+<div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>Model<span class="fl">.4</span> <span class="ot">&lt;-</span> <span class="fu">update</span>(Model<span class="fl">.3</span>, <span class="at">correlation =</span> <span class="fu">corCAR1</span>(<span class="at">value =</span> <span class="fl">0.4</span>, <span class="at">form =</span> <span class="sc">~</span> session <span class="sc">|</span> study<span class="sc">/</span>cluster<span class="sc">/</span>case))</span></code></pre></div>
 </div>
 <div id="cluster-robust-variance-estimation-3" class="section level4">
 <h4><strong>Cluster-robust variance estimation</strong></h4>
-<div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="fu">options</span>(<span class="at">width =</span> <span class="dv">100</span>)</span>
-<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>Model.<span class="fl">4.</span>vcov <span class="ot">&lt;-</span> <span class="fu">vcovCR</span>(Model<span class="fl">.4</span>, <span class="at">type =</span> <span class="st">&quot;CR2&quot;</span>)</span>
-<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>Model.<span class="fl">4.</span>crve <span class="ot">&lt;-</span> <span class="fu">coef_test</span>(Model<span class="fl">.4</span>, <span class="at">vcov =</span> Model.<span class="fl">4.</span>vcov , <span class="at">test =</span> <span class="st">&quot;Satterthwaite&quot;</span>)</span>
-<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a>Model.<span class="fl">4.</span>crve<span class="sc">$</span>beta <span class="ot">&lt;-</span> <span class="fu">round</span>(Model.<span class="fl">4.</span>crve<span class="sc">$</span>beta, <span class="dv">2</span>)</span>
-<span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a>Model.<span class="fl">4.</span>crve<span class="sc">$</span>SE <span class="ot">&lt;-</span> <span class="fu">round</span>(Model.<span class="fl">4.</span>crve<span class="sc">$</span>SE, <span class="dv">2</span>)</span>
-<span id="cb25-6"><a href="#cb25-6" aria-hidden="true" tabindex="-1"></a>Model.<span class="fl">4.</span>crve<span class="sc">$</span>tstat <span class="ot">&lt;-</span> <span class="fu">round</span>(Model.<span class="fl">4.</span>crve<span class="sc">$</span>tstat, <span class="dv">2</span>) <span class="sc">%&gt;%</span> <span class="fu">format</span>(Model.<span class="fl">4.</span>crve<span class="sc">$</span>tstat, <span class="at">scientific =</span> <span class="cn">FALSE</span>)</span>
-<span id="cb25-7"><a href="#cb25-7" aria-hidden="true" tabindex="-1"></a>Model.<span class="fl">4.</span>crve </span></code></pre></div>
+<div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="fu">options</span>(<span class="at">width =</span> <span class="dv">100</span>)</span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>Model.<span class="fl">4.</span>vcov <span class="ot">&lt;-</span> <span class="fu">vcovCR</span>(Model<span class="fl">.4</span>, <span class="at">type =</span> <span class="st">&quot;CR2&quot;</span>)</span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>Model.<span class="fl">4.</span>crve <span class="ot">&lt;-</span> <span class="fu">coef_test</span>(Model<span class="fl">.4</span>, <span class="at">vcov =</span> Model.<span class="fl">4.</span>vcov , <span class="at">test =</span> <span class="st">&quot;Satterthwaite&quot;</span>)</span>
+<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a>Model.<span class="fl">4.</span>crve<span class="sc">$</span>beta <span class="ot">&lt;-</span> <span class="fu">round</span>(Model.<span class="fl">4.</span>crve<span class="sc">$</span>beta, <span class="dv">2</span>)</span>
+<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a>Model.<span class="fl">4.</span>crve<span class="sc">$</span>SE <span class="ot">&lt;-</span> <span class="fu">round</span>(Model.<span class="fl">4.</span>crve<span class="sc">$</span>SE, <span class="dv">2</span>)</span>
+<span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a>Model.<span class="fl">4.</span>crve<span class="sc">$</span>tstat <span class="ot">&lt;-</span> <span class="fu">round</span>(Model.<span class="fl">4.</span>crve<span class="sc">$</span>tstat, <span class="dv">2</span>) <span class="sc">%&gt;%</span> <span class="fu">format</span>(Model.<span class="fl">4.</span>crve<span class="sc">$</span>tstat, <span class="at">scientific =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb22-7"><a href="#cb22-7" aria-hidden="true" tabindex="-1"></a>Model.<span class="fl">4.</span>crve </span></code></pre></div>
 <pre><code>##                      Coef. Estimate    SE t-stat d.f. (Satt) p-val (Satt) Sig.
 ##                (Intercept)    26.43  2.93   9.01        4.33      &lt; 0.001  ***
 ##                 Time_A1_A1     1.65  1.22   1.35        2.54      0.28475     
@@ -288031,12 +288014,12 @@ correlation structure (corCAR1)</strong></h4>
 <div id="comparing-likelihoods-of-fitted-objects"
 class="section level4">
 <h4><strong>Comparing likelihoods of fitted objects</strong></h4>
-<div class="sourceCode" id="cb27"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>M3_M4 <span class="ot">&lt;-</span> <span class="fu">anova</span>(Model<span class="fl">.3</span>, Model<span class="fl">.4</span>)</span>
-<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>M3_M4</span></code></pre></div>
+<div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>M3_M4 <span class="ot">&lt;-</span> <span class="fu">anova</span>(Model<span class="fl">.3</span>, Model<span class="fl">.4</span>)</span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>M3_M4</span></code></pre></div>
 <pre><code>##         Model df      AIC      BIC    logLik   Test  L.Ratio p-value
 ## Model.3     1 61 17011.52 17352.81 -8444.759                        
 ## Model.4     2 62 16919.50 17266.38 -8397.748 1 vs 2 94.02131  &lt;.0001</code></pre>
-<div class="sourceCode" id="cb29"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">ACF</span>(Model<span class="fl">.4</span>, <span class="at">maxLag=</span><span class="dv">15</span>), <span class="at">alpha =</span> .<span class="dv">05</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb26"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">ACF</span>(Model<span class="fl">.4</span>, <span class="at">maxLag=</span><span class="dv">15</span>), <span class="at">alpha =</span> .<span class="dv">05</span>)</span></code></pre></div>
 <p><img src="index_files/figure-html/unnamed-chunk-18-1.png" width="576" /></p>
 </div>
 </div>
@@ -288047,17 +288030,17 @@ id="contextual-model-with-cross-level-interactions-and-heterogeneous-ar1-correla
 class="section level4">
 <h4><strong>Contextual model with cross-level interactions and
 heterogeneous AR(1) correlation structure (corCAR1)</strong></h4>
-<div class="sourceCode" id="cb30"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a>Model<span class="fl">.5</span> <span class="ot">&lt;-</span> <span class="fu">update</span>(Model<span class="fl">.4</span>, <span class="at">weights =</span> <span class="fu">varIdent</span>(<span class="at">form =</span> <span class="sc">~</span> <span class="dv">1</span> <span class="sc">|</span> phase))</span></code></pre></div>
+<div class="sourceCode" id="cb27"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>Model<span class="fl">.5</span> <span class="ot">&lt;-</span> <span class="fu">update</span>(Model<span class="fl">.4</span>, <span class="at">weights =</span> <span class="fu">varIdent</span>(<span class="at">form =</span> <span class="sc">~</span> <span class="dv">1</span> <span class="sc">|</span> phase))</span></code></pre></div>
 </div>
 <div id="cluster-robust-variance-estimation-4" class="section level4">
 <h4><strong>Cluster-robust variance estimation</strong></h4>
-<div class="sourceCode" id="cb31"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="fu">options</span>(<span class="at">width =</span> <span class="dv">100</span>)</span>
-<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a>Model.<span class="fl">5.</span>vcov <span class="ot">&lt;-</span> <span class="fu">vcovCR</span>(Model<span class="fl">.5</span>, <span class="at">type =</span> <span class="st">&quot;CR2&quot;</span>)</span>
-<span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a>Model.<span class="fl">5.</span>crve <span class="ot">&lt;-</span> <span class="fu">coef_test</span>(Model<span class="fl">.5</span>, <span class="at">vcov =</span> Model.<span class="fl">5.</span>vcov , <span class="at">test =</span> <span class="st">&quot;Satterthwaite&quot;</span>)</span>
-<span id="cb31-4"><a href="#cb31-4" aria-hidden="true" tabindex="-1"></a>Model.<span class="fl">5.</span>crve<span class="sc">$</span>beta <span class="ot">&lt;-</span> <span class="fu">round</span>(Model.<span class="fl">5.</span>crve<span class="sc">$</span>beta, <span class="dv">2</span>)</span>
-<span id="cb31-5"><a href="#cb31-5" aria-hidden="true" tabindex="-1"></a>Model.<span class="fl">5.</span>crve<span class="sc">$</span>SE <span class="ot">&lt;-</span> <span class="fu">round</span>(Model.<span class="fl">5.</span>crve<span class="sc">$</span>SE, <span class="dv">2</span>)</span>
-<span id="cb31-6"><a href="#cb31-6" aria-hidden="true" tabindex="-1"></a>Model.<span class="fl">5.</span>crve<span class="sc">$</span>tstat <span class="ot">&lt;-</span> <span class="fu">round</span>(Model.<span class="fl">5.</span>crve<span class="sc">$</span>tstat, <span class="dv">2</span>) <span class="sc">%&gt;%</span> <span class="fu">format</span>(Model.<span class="fl">5.</span>crve<span class="sc">$</span>tstat, <span class="at">scientific =</span> <span class="cn">FALSE</span>)</span>
-<span id="cb31-7"><a href="#cb31-7" aria-hidden="true" tabindex="-1"></a>Model.<span class="fl">5.</span>crve </span></code></pre></div>
+<div class="sourceCode" id="cb28"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="fu">options</span>(<span class="at">width =</span> <span class="dv">100</span>)</span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>Model.<span class="fl">5.</span>vcov <span class="ot">&lt;-</span> <span class="fu">vcovCR</span>(Model<span class="fl">.5</span>, <span class="at">type =</span> <span class="st">&quot;CR2&quot;</span>)</span>
+<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a>Model.<span class="fl">5.</span>crve <span class="ot">&lt;-</span> <span class="fu">coef_test</span>(Model<span class="fl">.5</span>, <span class="at">vcov =</span> Model.<span class="fl">5.</span>vcov , <span class="at">test =</span> <span class="st">&quot;Satterthwaite&quot;</span>)</span>
+<span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a>Model.<span class="fl">5.</span>crve<span class="sc">$</span>beta <span class="ot">&lt;-</span> <span class="fu">round</span>(Model.<span class="fl">5.</span>crve<span class="sc">$</span>beta, <span class="dv">2</span>)</span>
+<span id="cb28-5"><a href="#cb28-5" aria-hidden="true" tabindex="-1"></a>Model.<span class="fl">5.</span>crve<span class="sc">$</span>SE <span class="ot">&lt;-</span> <span class="fu">round</span>(Model.<span class="fl">5.</span>crve<span class="sc">$</span>SE, <span class="dv">2</span>)</span>
+<span id="cb28-6"><a href="#cb28-6" aria-hidden="true" tabindex="-1"></a>Model.<span class="fl">5.</span>crve<span class="sc">$</span>tstat <span class="ot">&lt;-</span> <span class="fu">round</span>(Model.<span class="fl">5.</span>crve<span class="sc">$</span>tstat, <span class="dv">2</span>) <span class="sc">%&gt;%</span> <span class="fu">format</span>(Model.<span class="fl">5.</span>crve<span class="sc">$</span>tstat, <span class="at">scientific =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb28-7"><a href="#cb28-7" aria-hidden="true" tabindex="-1"></a>Model.<span class="fl">5.</span>crve </span></code></pre></div>
 <pre><code>##                      Coef. Estimate    SE t-stat d.f. (Satt) p-val (Satt) Sig.
 ##                (Intercept)    26.81  2.89   9.27        3.90      &lt; 0.001  ***
 ##                 Time_A1_A1     1.51  1.18   1.28        2.32      0.31247     
@@ -288093,12 +288076,12 @@ heterogeneous AR(1) correlation structure (corCAR1)</strong></h4>
 <div id="comparing-likelihoods-of-fitted-objects-1"
 class="section level4">
 <h4><strong>Comparing likelihoods of fitted objects</strong></h4>
-<div class="sourceCode" id="cb33"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a>M4_M5 <span class="ot">&lt;-</span> <span class="fu">anova</span>(Model<span class="fl">.4</span>, Model<span class="fl">.5</span>)</span>
-<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a>M4_M5</span></code></pre></div>
+<div class="sourceCode" id="cb30"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a>M4_M5 <span class="ot">&lt;-</span> <span class="fu">anova</span>(Model<span class="fl">.4</span>, Model<span class="fl">.5</span>)</span>
+<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a>M4_M5</span></code></pre></div>
 <pre><code>##         Model df     AIC      BIC    logLik   Test  L.Ratio p-value
 ## Model.4     1 62 16919.5 17266.38 -8397.748                        
 ## Model.5     2 66 16887.0 17256.26 -8377.500 1 vs 2 40.49539  &lt;.0001</code></pre>
-<div class="sourceCode" id="cb35"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">ACF</span>(Model<span class="fl">.5</span>, <span class="at">maxLag=</span><span class="dv">15</span>), <span class="at">alpha =</span> .<span class="dv">05</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb32"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">ACF</span>(Model<span class="fl">.5</span>, <span class="at">maxLag=</span><span class="dv">15</span>), <span class="at">alpha =</span> .<span class="dv">05</span>)</span></code></pre></div>
 <p><img src="index_files/figure-html/unnamed-chunk-22-1.png" width="576" /></p>
 </div>
 </div>
