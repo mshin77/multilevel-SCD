@@ -62,6 +62,7 @@ Model.1 <- lme(outcome ~ 1,
                random = ~ 1 | study/cluster/case,
                control=list(maxIter=100,msMaxIter=100,tolerance=1e-3,
                             opt="optim",optimMethod="BFGS"))
+summary(Model.1)
 ```
 
 #### **Cluster-robust variance estimation** 
@@ -130,6 +131,7 @@ Model.2 <- lme(outcome ~
                random = ~ Time_A1_A1 + B1 + Time_B1_B1 | study/cluster/case,
                control=list(maxIter=100,msMaxIter=100,tolerance=1e-3,
                             opt="optim",optimMethod="BFGS"))
+
 ```
 
 #### **Cluster-robust variance estimation** 
@@ -142,6 +144,9 @@ Model.2.crve$beta <- round(Model.2.crve$beta, 2)
 Model.2.crve$SE <- round(Model.2.crve$SE, 2)
 Model.2.crve$tstat <- round(Model.2.crve$tstat, 2) %>% format(Model.2.crve$tstat, scientific = FALSE)
 Model.2.crve 
+```
+```{r, fig.width=6, fig.height=4}
+plot(ACF(Model.2, maxLag=15), alpha = .05)
 ```
 
 ### Model.3
@@ -183,11 +188,18 @@ Model.3.crve$beta <- round(Model.3.crve$beta, 2)
 Model.3.crve$SE <- round(Model.3.crve$SE, 2)
 Model.3.crve$tstat <- round(Model.3.crve$tstat, 2) %>% format(Model.3.crve$tstat, scientific = FALSE)
 Model.3.crve 
+
+Model.3.crve$Estimate2 <- paste(Model.3.crve$Estimate, Model.3.crve$SE, sep = " ")
+Model.3.crve %>% tibble()
+write.csv(Model.3.crve, file = "Model.3.crve.csv")
+```
+```{r, fig.width=6, fig.height=4}
+plot(ACF(Model.3, maxLag=15), alpha = .05)
 ```
 
 ### Model.4
 
-#### **Contextual model with cross-level interactions and AR(1) correlation structure (corAR1)** 
+#### **Contextual model with cross-level interactions and AR(1) correlation structure (corCAR1)** 
 
 ```{r, eval=FALSE}
 Model.4 <- update(Model.3, correlation = corCAR1(value = 0.4, form = ~ session | study/cluster/case))
@@ -212,9 +224,13 @@ M3_M4 <- anova(Model.3, Model.4)
 M3_M4
 ```
 
+```{r, fig.width=6, fig.height=4}
+plot(ACF(Model.4, maxLag=15), alpha = .05)
+```
+
 ### Model.5
 
-#### **Contextual model with cross-level interactions and heterogenous AR(1) correlation structure (corAR1)** 
+#### **Contextual model with cross-level interactions and heterogeneous AR(1) correlation structure (corCAR1)** 
 
 ```{r, eval=FALSE}
 Model.5 <- update(Model.4, weights = varIdent(form = ~ 1 | phase))
@@ -237,4 +253,8 @@ Model.5.crve
 ```{r}
 M4_M5 <- anova(Model.4, Model.5)
 M4_M5
+```
+
+```{r, fig.width=6, fig.height=4}
+plot(ACF(Model.5, maxLag=15), alpha = .05)
 ```
