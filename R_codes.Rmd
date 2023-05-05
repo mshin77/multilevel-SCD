@@ -62,7 +62,6 @@ Model.1 <- lme(outcome ~ 1,
                random = ~ 1 | study/cluster/case,
                control=list(maxIter=100,msMaxIter=100,tolerance=1e-3,
                             opt="optim",optimMethod="BFGS"))
-summary(Model.1)
 ```
 
 #### **Cluster-robust variance estimation** 
