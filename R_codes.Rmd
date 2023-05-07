@@ -191,7 +191,7 @@ plot(ACF(Model.3, maxLag=15), alpha = .05)
 $$
 \text { Pseudo-}\mathrm{R}^2=\frac{\text { Variance }_{\text {Model 2}}-\text { Variance }_{\text {Model 3}}}{\text { Variance }_{\text {Model 2}}}
 $$
-```{r, fig.width=7, fig.height=5}
+```{r, fig.width=7, fig.height=5, echo=FALSE}
 var_comp.td <- var_comp %>% 
   select(level, coef, pseudo_R_sq_M3, pseudo_R_sq_M4) %>% tibble()
 
@@ -273,7 +273,8 @@ plot(ACF(Model.4, maxLag=15), alpha = .05)
 $$
 \text { Pseudo-}\mathrm{R}^2=\frac{\text { Variance }_{\text {Model 2}}-\text { Variance }_{\text {Model 4}}}{\text { Variance }_{\text {Model 2}}}
 $$
-```{r, fig.width=7, fig.height=5}
+
+```{r, fig.width=7, fig.height=5, echo=FALSE}
 var_m4_plot <- ggplot(var_comp.td, aes(x=coef, y=pseudo_R_sq_M4, fill=level)) +
   geom_bar(stat="identity", position="stack") +
   labs(x="", y="pseudo R squared (Model 2 to Model 4)", fill="Multilevels") +
