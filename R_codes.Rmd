@@ -32,11 +32,13 @@ suppressPackageStartupMessages({
   library(ggplot2)
 })
 
-# var_comp <- read.csv("data/vc.csv")
+var_comp <- read.csv("data/var_comp.csv")
 # wp_data_mlm <- read.csv("data/wp_data.csv")
-
 load("data/wp_mlm.RData")
+```
 
+
+```{r, eval=FALSE}
 wp_data_mlm_kb <- wp_data_mlm %>%
     kbl(align = "c") %>%
     kable_styling(
@@ -57,7 +59,7 @@ wp_data_mlm_kb
 
 #### **Null model** 
 
-```{r, eval = FALSE}
+```{r, eval=FALSE}
 Model.1 <- lme(outcome ~ 1,
                data = wp_data_mlm,
                method = "REML",
@@ -73,6 +75,11 @@ options(width = 100)
 Model.1.vcov <- vcovCR(Model.1, type = "CR2")
 Model.1.crve <- coef_test(Model.1, vcov = Model.1.vcov , test = "Satterthwaite")
 Model.1.crve
+```
+
+#### **Variance components**
+```{r}
+VarCorr(Model.1)
 ```
 
 #### **Intraclass correlation (ICC)** 
@@ -111,9 +118,9 @@ plot(ACF(Model.1, maxLag=15), alpha = .05)
 
 ### Model.2 
 
-#### **Random-coefficient model with no covariates**
+#### **Piecewise growth model with AR(1) correlation structure (corCAR1)**
 
-```{r, eval = FALSE}
+```{r, eval=FALSE}
 Model.2 <- lme(outcome ~
                  Time_A1_A1 +
                  B1 + Time_B1_B1 +
@@ -123,6 +130,7 @@ Model.2 <- lme(outcome ~
                data = wp_data_mlm,
                method = "REML",
                random = ~ Time_A1_A1 + B1 + Time_B1_B1 | study/cluster/case,
+               correlation = corCAR1(value = 0.4, form = ~ session | study/cluster/case),
                control=list(maxIter=100,msMaxIter=100,tolerance=1e-3,
                             opt="optim",optimMethod="BFGS"))
 
@@ -140,6 +148,11 @@ Model.2.crve$tstat <- round(Model.2.crve$tstat, 2) %>% format(Model.2.crve$tstat
 Model.2.crve 
 ```
 
+#### **Variance components**
+```{r}
+VarCorr(Model.2)
+```
+
 #### **Autocorrelation**
 
 ```{r, fig.width=6, fig.height=4}
@@ -148,27 +161,13 @@ plot(ACF(Model.2, maxLag=15), alpha = .05)
 
 ### Model.3
 
-#### **Random-coefficient model with time-varying predictors**
+#### **Piecewise growth model with heterogeneous AR(1) correlation structure (corCAR1)** 
 
-```{r, eval = FALSE}
-Model.3 <- lme(outcome ~
-                 Time_A1_A1 +
-                 B1 + Time_B1_B1 +
-                 A2 + Time_A2_A2 +
-                 B2 + Time_B2_B2 +
-                 M + Time_M_M +
-                 mixed_problem + Time_A1_A1:mixed_problem +
-                 B1:mixed_problem + Time_B1_B1:mixed_problem +
-                 generalization + Time_A1_A1:generalization +
-                 B1:generalization + Time_B1_B1:generalization,
-               data = wp_data_mlm,
-               method = "REML",
-               random = ~ Time_A1_A1 + B1 + Time_B1_B1 | study/cluster/case,
-               control=list(maxIter=100,msMaxIter=100,tolerance=1e-3,
-                            opt="optim",optimMethod="BFGS"))
+```{r, eval=FALSE}
+Model.3 <- update(Model.2, weights = varIdent(form = ~ 1 | phase))
 ```
 
-#### **Cluster-robust variance estimation**
+#### **Cluster-robust variance estimation** 
 
 ```{r}
 options(width = 100)
@@ -180,62 +179,35 @@ Model.3.crve$tstat <- round(Model.3.crve$tstat, 2) %>% format(Model.3.crve$tstat
 Model.3.crve 
 ```
 
+#### **Variance components**
+```{r}
+VarCorr(Model.3)
+```
+
+#### **Comparing likelihoods of fitted objects**
+
+```{r}
+M2_M3 <- anova(Model.2, Model.3)
+M2_M3
+```
+
 #### **Autocorrelation**
 
 ```{r, fig.width=6, fig.height=4}
 plot(ACF(Model.3, maxLag=15), alpha = .05)
 ```
 
-#### **Proportion of outcome variation explained**
-
-$$
-\text { Pseudo-}\mathrm{R}^2=\frac{\text { Variance }_{\text {Model 2}}-\text { Variance }_{\text {Model 3}}}{\text { Variance }_{\text {Model 2}}}
-$$
-```{r, fig.width=6, fig.height=4, echo=FALSE}
-var_comp.td <- var_comp %>% 
-  select(level, coef, pseudo_R_sq_M3, pseudo_R_sq_M4) %>% tibble()
-
-var_comp.td$level <- factor(var_comp.td$level,levels = c("Study","Cluster","Case", "Session"))
-var_comp.td$coef <- factor(var_comp.td$coef,levels = c("Intercept","Slope A1","Level change B1", "Slope B1", "Residual"))
-
-var_m3_plot <- ggplot(var_comp.td, aes(x=coef, y=pseudo_R_sq_M3, fill=level)) +
-  geom_bar(stat="identity", position="stack") +
-  labs(x="", y="pseudo R squared (Model 2 to Model 3)", fill="Multilevels") +
-  geom_hline(yintercept=0, linetype="dashed",
-                color = "black", size=0.7) +
-  theme_minimal(base_size = 11) +
-  theme(panel.grid.major = element_blank(),
-        panel.grid.minor = element_blank(),
-        axis.line = element_line(color = "#3B3B3B", linewidth = 0.3),
-        axis.ticks = element_line(color = "#3B3B3B", linewidth = 0.3),
-        strip.text.x = element_text(size = 11, color = "#3B3B3B"), 
-        axis.text.x = element_text(size = 11, color = "#3B3B3B"),
-        axis.text.y = element_text(size = 11, color = "#3B3B3B"),
-        axis.title = element_text(size = 11, color = "#3B3B3B"),
-        axis.title.x = element_text(margin = margin(t = 10)),
-        axis.title.y = element_text(margin = margin(r = 10)),
-        legend.title = element_text(size = 11, color = "#3B3B3B"),
-        legend.text = element_text(size = 11, color = "#3B3B3B"),
-        legend.title.align = 0.5,
-        legend.position = "bottom") + scale_fill_grey(start = 0.45, end = 0.9) 
-var_m3_plot
-```
-
 ### Model.4
 
-#### **Contextual model with time-varying and time-invariant predictors (cross-level interactions)** 
+#### **Piecewise growth model with time-invariant (Level 4) predictors (cross-level interactions)**
 
-```{r, eval = FALSE}
+```{r, eval=FALSE}
 Model.4 <- lme(outcome ~
                  Time_A1_A1 +
                  B1 + Time_B1_B1 +
                  A2 + Time_A2_A2 +
                  B2 + Time_B2_B2 +
                  M + Time_M_M +
-                 mixed_problem + Time_A1_A1:mixed_problem +
-                 B1:mixed_problem + Time_B1_B1:mixed_problem +
-                 generalization + Time_A1_A1:generalization +
-                 B1:generalization + Time_B1_B1:generalization +
                  withdrawal + Time_A1_A1:withdrawal +
                  B1:withdrawal + Time_B1_B1:withdrawal +
                  multi_base + Time_A1_A1:multi_base +
@@ -245,12 +217,14 @@ Model.4 <- lme(outcome ~
                data = wp_data_mlm,
                method = "REML",
                random = ~ Time_A1_A1 + B1 + Time_B1_B1 | study/cluster/case,
+               correlation = corCAR1(value = 0.4, form = ~ session | study/cluster/case),
+               weights = varIdent(form = ~ 1 | phase),
                control=list(maxIter=100,msMaxIter=100,tolerance=1e-3,
                             opt="optim",optimMethod="BFGS"))
-
 ```
 
-#### **Cluster-robust variance estimation**
+
+#### **Cluster-robust variance estimation** 
 
 ```{r}
 options(width = 100)
@@ -260,6 +234,11 @@ Model.4.crve$beta <- round(Model.4.crve$beta, 2)
 Model.4.crve$SE <- round(Model.4.crve$SE, 2)
 Model.4.crve$tstat <- round(Model.4.crve$tstat, 2) %>% format(Model.4.crve$tstat, scientific = FALSE)
 Model.4.crve 
+```
+
+#### **Variance components**
+```{r}
+VarCorr(Model.4)
 ```
 
 #### **Autocorrelation**
@@ -273,10 +252,17 @@ plot(ACF(Model.4, maxLag=15), alpha = .05)
 $$
 \text { Pseudo-}\mathrm{R}^2=\frac{\text { Variance }_{\text {Model 3}}-\text { Variance }_{\text {Model 4}}}{\text { Variance }_{\text {Model 3}}}
 $$
-```{r, fig.width=6, fig.height=4, echo=FALSE}
-var_m4_plot <- ggplot(var_comp.td, aes(x=coef, y=pseudo_R_sq_M4, fill=level)) +
+
+```{r, fig.width=7.5, fig.height=5, echo=FALSE}
+var_comp.td <- var_comp %>%
+  select(level, coef, pseudo_R_sq_M4) %>% tibble()
+
+var_comp.td$level <- factor(var_comp.td$level,levels = c("Study","Cluster","Case", "Repeated measurement"))
+var_comp.td$coef <- factor(var_comp.td$coef,levels = c("residual M", "residual B2", "residual A2", "residual B1", "residual A1", "Slope B1", "Level change B1", "Slope A1", "Intercept"))
+
+var_m4_plot <- ggplot(var_comp.td, aes(x=pseudo_R_sq_M4, y=coef, fill=level)) +
   geom_bar(stat="identity", position="stack") +
-  labs(x="", y="pseudo R squared (Model 3 to Model 4)", fill="Multilevels") +
+  labs(x="", y="pseudo R squared", fill="Multilevels") +
   geom_hline(yintercept=0, linetype="dashed",
                 color = "black", size=0.7) +
   theme_minimal(base_size = 11) +
@@ -284,7 +270,7 @@ var_m4_plot <- ggplot(var_comp.td, aes(x=coef, y=pseudo_R_sq_M4, fill=level)) +
         panel.grid.minor = element_blank(),
         axis.line = element_line(color = "#3B3B3B", linewidth = 0.3),
         axis.ticks = element_line(color = "#3B3B3B", linewidth = 0.3),
-        strip.text.x = element_text(size = 11, color = "#3B3B3B"), 
+        strip.text.x = element_text(size = 11, color = "#3B3B3B"),
         axis.text.x = element_text(size = 11, color = "#3B3B3B"),
         axis.text.y = element_text(size = 11, color = "#3B3B3B"),
         axis.title = element_text(size = 11, color = "#3B3B3B"),
@@ -293,72 +279,7 @@ var_m4_plot <- ggplot(var_comp.td, aes(x=coef, y=pseudo_R_sq_M4, fill=level)) +
         legend.title = element_text(size = 11, color = "#3B3B3B"),
         legend.text = element_text(size = 11, color = "#3B3B3B"),
         legend.title.align = 0.5,
-        legend.position = "bottom") + scale_fill_grey(start = 0.45, end = 0.9) 
+        legend.position = "bottom") + scale_fill_brewer(palette = "Set2") # scale_fill_grey(start = 0.45, end = 0.9) 
 var_m4_plot
 ```
 
-### Model.5
-
-#### **Contextual model with cross-level interactions and AR(1) correlation structure (corCAR1)** 
-
-```{r, eval = FALSE}
-Model.5 <- update(Model.4, correlation = corCAR1(value = 0.4, form = ~ session | study/cluster/case))
-```
-
-#### **Cluster-robust variance estimation** 
-
-```{r}
-options(width = 100)
-Model.5.vcov <- vcovCR(Model.5, type = "CR2")
-Model.5.crve <- coef_test(Model.5, vcov = Model.5.vcov , test = "Satterthwaite")
-Model.5.crve$beta <- round(Model.5.crve$beta, 2)
-Model.5.crve$SE <- round(Model.5.crve$SE, 2)
-Model.5.crve$tstat <- round(Model.5.crve$tstat, 2) %>% format(Model.5.crve$tstat, scientific = FALSE)
-Model.5.crve 
-```
-
-#### **Comparing likelihoods of fitted objects**
-
-```{r}
-M4_M5 <- anova(Model.4, Model.5)
-M4_M5
-```
-
-#### **Autocorrelation**
-
-```{r, fig.width=6, fig.height=4}
-plot(ACF(Model.5, maxLag=15), alpha = .05)
-```
-
-### Model.6
-
-#### **Contextual model with cross-level interactions and heterogeneous AR(1) correlation structure (corCAR1)** 
-
-```{r, eval = FALSE}
-Model.6 <- update(Model.5, weights = varIdent(form = ~ 1 | phase))
-```
-
-#### **Cluster-robust variance estimation** 
-
-```{r}
-options(width = 100)
-Model.6.vcov <- vcovCR(Model.6, type = "CR2")
-Model.6.crve <- coef_test(Model.6, vcov = Model.6.vcov , test = "Satterthwaite")
-Model.6.crve$beta <- round(Model.6.crve$beta, 2)
-Model.6.crve$SE <- round(Model.6.crve$SE, 2)
-Model.6.crve$tstat <- round(Model.6.crve$tstat, 2) %>% format(Model.6.crve$tstat, scientific = FALSE)
-Model.6.crve 
-```
-
-#### **Comparing likelihoods of fitted objects**
-
-```{r}
-M5_M6 <- anova(Model.5, Model.6)
-M5_M6
-```
-
-#### **Autocorrelation**
-
-```{r, fig.width=6, fig.height=4}
-plot(ACF(Model.6, maxLag=15), alpha = .05)
-```
