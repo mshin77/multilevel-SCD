@@ -1,1 +1,1 @@
-Authors. (2023). *Multilevel modeling of single-case data: Level changes and trends during phases moderated by complexity of outcome measures and single-case experimental designs*. [Manuscript submitted for publication]. https://multilevel-sced.netlify.app
+Authors. (2023). *Multilevel modeling of single-case data: Level changes and trends during phases moderated by single-case experimental design types*. [Manuscript submitted for publication]. https://multilevel-sced.netlify.app

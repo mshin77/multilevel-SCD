@@ -1,5 +1,5 @@
 ---
-title: "Multilevel modeling of single-case data: Level changes and trends during phases moderated by complexity of outcome measures and single-case experimental designs"
+title: "Multilevel modeling of single-case data: Level changes and trends during phases moderated by single-case experimental design types"
 date: "`r Sys.Date()`"
 output:
   rmdformats::html_clean:
@@ -17,7 +17,7 @@ knitr::opts_chunk$set(
     warning = FALSE)
 ```
 
-This webpage contains raw datasets, outputs, and R codes used for the four-level multilevel modeling. Data analysis scripts were also posted through an online data repository at <https://osf.io/8wbta/?view_only=31ca7d3193104652b39dbb4a516a5f00>.
+This webpage contains raw datasets, outputs, and R codes used for the four-level multilevel modeling in Authors (2023). Data analysis scripts were also posted through an online data repository at <https://osf.io/8wbta/?view_only=31ca7d3193104652b39dbb4a516a5f00>.
 
 ## Datasets {.tabset}
 
@@ -32,24 +32,18 @@ suppressPackageStartupMessages({
   library(ggplot2)
 })
 
-var_comp <- read.csv("data/var_comp.csv")
+# var_comp <- read.csv("data/var_comp.csv")
 # wp_data_mlm <- read.csv("data/wp_data.csv")
 load("data/wp_mlm.RData")
-```
 
-
-```{r, eval=FALSE}
 wp_data_mlm_kb <- wp_data_mlm %>%
     kbl(align = "c") %>%
     kable_styling(
         bootstrap_options = c("striped","hover","condensed"),
         full_width = T,
         font_size = 12,
-        fixed_thead = T
-    ) %>%
-    scroll_box(
-        height = "500px"
-    )
+        fixed_thead = T) %>%
+    scroll_box(height = "500px")
 wp_data_mlm_kb
 ```
 
