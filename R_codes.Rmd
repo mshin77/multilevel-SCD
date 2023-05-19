@@ -252,7 +252,7 @@ var_comp.td <- var_comp %>%
   select(level, coef, pseudo_R_sq_M4) %>% tibble()
 
 var_comp.td$level <- factor(var_comp.td$level,levels = c("Study","Cluster","Case", "Repeated measurement"))
-var_comp.td$coef <- factor(var_comp.td$coef,levels = c("residual M", "residual B2", "residual A2", "residual B1", "residual A1", "Slope B1", "Level change B1", "Slope A1", "Intercept"))
+var_comp.td$coef <- factor(var_comp.td$coef,levels = c("residual M", "residual B2", "residual A2", "residual B1", "residual A1", "Trend B1", "Level change B1", "Trend A1", "Intercept"))
 
 var_m4_plot <- ggplot(var_comp.td, aes(x=pseudo_R_sq_M4, y=coef, fill=level)) +
   geom_bar(stat="identity", position="stack") +
@@ -276,4 +276,3 @@ var_m4_plot <- ggplot(var_comp.td, aes(x=pseudo_R_sq_M4, y=coef, fill=level)) +
         legend.position = "bottom") + scale_fill_brewer(palette = "Set2") # scale_fill_grey(start = 0.45, end = 0.9) 
 var_m4_plot
 ```
-
