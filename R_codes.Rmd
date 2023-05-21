@@ -33,7 +33,7 @@ suppressPackageStartupMessages({
 })
 
 # var_comp <- read.csv("data/var_comp.csv")
-# wp_data_mlm <- read.csv("data/wp_data.csv")
+wp_data_mlm <- read.csv("data/wp_data.csv")
 load("data/wp_mlm.RData")
 
 wp_data_mlm_kb <- wp_data_mlm %>%
