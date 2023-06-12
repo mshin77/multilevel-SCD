@@ -1,5 +1,5 @@
 ---
-title: "Multilevel modeling of single-case data: Mean changes and trends during phases moderated by single-case experimental design types"
+title: "Longitudinal multilevel modeling of single-case data: A meta-analytic method"
 date: "`r Sys.Date()`"
 output:
   rmdformats::html_clean:
