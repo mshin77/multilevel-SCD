@@ -1,1 +1,1 @@
-Authors. (2023). *Multilevel modeling of single-case data: Level changes and trends during phases moderated by single-case experimental design types*. [Manuscript submitted for publication]. https://multilevel-sced.netlify.app
+Authors. (2023). *Longitudinal multilevel modeling of single-case data: A meta-analytic method*. [Manuscript submitted for publication]. https://multilevel-sced.netlify.app
