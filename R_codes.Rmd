@@ -1,5 +1,5 @@
 ---
-title: "Multilevel modeling of single-case data: Level changes and trends during phases moderated by single-case experimental design types"
+title: "Multilevel modeling of single-case data: Mean changes and trends during phases moderated by single-case experimental design types"
 date: "`r Sys.Date()`"
 output:
   rmdformats::html_clean:
@@ -252,11 +252,11 @@ var_comp.td <- var_comp %>%
   select(level, coef, pseudo_R_sq_M4) %>% tibble()
 
 var_comp.td$level <- factor(var_comp.td$level,levels = c("Study","Cluster","Case", "Repeated measurement"))
-var_comp.td$coef <- factor(var_comp.td$coef,levels = c("residual M", "residual B2", "residual A2", "residual B1", "residual A1", "Trend B1", "Level change B1", "Trend A1", "Intercept"))
+var_comp.td$coef <- factor(var_comp.td$coef,levels = c("Residual M", "Residual B2", "Residual A2", "Residual B1", "Residual A1", "Trend B1", "Mean change B1", "Trend A1", "Intercept"))
 
 var_m4_plot <- ggplot(var_comp.td, aes(x=pseudo_R_sq_M4, y=coef, fill=level)) +
   geom_bar(stat="identity", position="stack") +
-  labs(x="", y="pseudo R squared", fill="Multilevels") +
+  labs(x="", y="Pseudo R squared", fill="Multilevels") +
   geom_hline(yintercept=0, linetype="dashed",
                 color = "black", size=0.7) +
   theme_minimal(base_size = 11) +
