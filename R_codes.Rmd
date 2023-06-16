@@ -247,7 +247,7 @@ $$
 \text { Pseudo-}\mathrm{R}^2=\frac{\text { Variance }_{\text {Model 3}}-\text { Variance }_{\text {Model 4}}}{\text { Variance }_{\text {Model 3}}}
 $$
 
-```{r, fig.width=7, fig.height=3.5, echo=FALSE}
+```{r, fig.width=7, fig.height=3.8, echo=FALSE}
 var_comp.td <- var_comp %>%
   select(level, coef, pseudo_R_sq_M4) %>% tibble()
 
