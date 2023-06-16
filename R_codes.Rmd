@@ -247,7 +247,7 @@ $$
 \text { Pseudo-}\mathrm{R}^2=\frac{\text { Variance }_{\text {Model 3}}-\text { Variance }_{\text {Model 4}}}{\text { Variance }_{\text {Model 3}}}
 $$
 
-```{r, fig.width=7.5, fig.height=5, echo=FALSE}
+```{r, fig.width=7, fig.height=4.5, echo=FALSE}
 var_comp.td <- var_comp %>%
   select(level, coef, pseudo_R_sq_M4) %>% tibble()
 
@@ -258,8 +258,9 @@ var_m4_plot <- ggplot(var_comp.td, aes(x=pseudo_R_sq_M4, y=coef, fill=level)) +
   geom_bar(stat="identity", position="stack") +
   labs(x="", y="Pseudo R squared", fill="Multilevels") +
   geom_hline(yintercept=0, linetype="dashed",
-                color = "black", size=0.7) +
+             color = "black", size=0.7) +
   theme_minimal(base_size = 11) +
+  theme(plot.margin = margin(0, 0, 0, 0)) +
   theme(panel.grid.major = element_blank(),
         panel.grid.minor = element_blank(),
         axis.line = element_line(color = "#3B3B3B", linewidth = 0.3),
@@ -268,11 +269,11 @@ var_m4_plot <- ggplot(var_comp.td, aes(x=pseudo_R_sq_M4, y=coef, fill=level)) +
         axis.text.x = element_text(size = 11, color = "#3B3B3B"),
         axis.text.y = element_text(size = 11, color = "#3B3B3B"),
         axis.title = element_text(size = 11, color = "#3B3B3B"),
-        axis.title.x = element_text(margin = margin(t = 10)),
         axis.title.y = element_text(margin = margin(r = 10)),
         legend.title = element_text(size = 11, color = "#3B3B3B"),
         legend.text = element_text(size = 11, color = "#3B3B3B"),
         legend.title.align = 0.5,
-        legend.position = "bottom") + scale_fill_brewer(palette = "Set2") # scale_fill_grey(start = 0.45, end = 0.9) 
+        legend.position = "bottom") + 
+  scale_fill_brewer(palette = "Set2") 
 var_m4_plot
 ```
