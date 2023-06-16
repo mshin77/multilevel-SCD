@@ -247,7 +247,7 @@ $$
 \text { Pseudo-}\mathrm{R}^2=\frac{\text { Variance }_{\text {Model 3}}-\text { Variance }_{\text {Model 4}}}{\text { Variance }_{\text {Model 3}}}
 $$
 
-```{r, fig.width=7, fig.height=3.8, echo=FALSE}
+```{r, fig.width=7, fig.height=4, echo=FALSE}
 var_comp.td <- var_comp %>%
   select(level, coef, pseudo_R_sq_M4) %>% tibble()
 
@@ -275,7 +275,7 @@ var_m4_plot <- ggplot(var_comp.td, aes(x=pseudo_R_sq_M4, y=coef, fill=level)) +
         legend.title.align = 0.5,
         legend.position = "bottom") + 
   scale_fill_brewer(palette = "Set2") 
-  # scale_fill_grey(start = 0.45, end = 0.9) 
+  # scale_fill_grey(start = 0.45, end = 0.9)
 var_m4_plot
 ```
 
