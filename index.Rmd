@@ -17,9 +17,9 @@ knitr::opts_chunk$set(
     warning = FALSE)
 ```
 
-This webpage contains raw datasets, outputs, and R codes used for the four-level multilevel modeling in Authors (2023). Data analysis scripts were also posted through an online data repository at <https://osf.io/8wbta/?view_only=31ca7d3193104652b39dbb4a516a5f00>.
+This webpage contains the coded dataset, outputs, and R codes used for the four-level multilevel modeling in Authors (2023). Data analysis scripts have been posted through an online data repository, accessible at <https://osf.io/8wbta/?view_only=31ca7d3193104652b39dbb4a516a5f00>.
 
-## Datasets {.tabset}
+## Dataset {.tabset}
 
 ```{r, echo=FALSE}
 suppressPackageStartupMessages({
@@ -275,6 +275,7 @@ var_m4_plot <- ggplot(var_comp.td, aes(x=pseudo_R_sq_M4, y=coef, fill=level)) +
         legend.title.align = 0.5,
         legend.position = "bottom") + 
   scale_fill_brewer(palette = "Set2") 
+  # scale_fill_grey(start = 0.45, end = 0.9) 
 var_m4_plot
 ```
 
