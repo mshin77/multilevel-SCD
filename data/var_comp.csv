@@ -1,18 +1,18 @@
 level,coef,Model.3,Model.4,pseudo_R_sq_M4
 Study,Intercept,41.66,41.76,-0.002
-Study,Trend A1,3.08,2.09,0.321
-Study,Mean change B1,441.45,213.22,0.517
-Study,Trend B1,28.49,4.52,0.841
+Study,A1 trend,3.08,2.09,0.321
+Study,Change in B1 mean,441.45,213.22,0.517
+Study,B1 trend,28.49,4.52,0.841
 Cluster,Intercept,71,68.26,0.039
-Cluster,Trend A1,0.35,0.44,-0.257
-Cluster,Mean change B1,71.1,70.76,0.005
-Cluster,Trend B1,0.37,0.35,0.054
+Cluster,A1 trend,0.35,0.44,-0.257
+Cluster,Change in B1 mean,71.1,70.76,0.005
+Cluster,B1 trend,0.37,0.35,0.054
 Case,Intercept,50.1,50.31,-0.004
-Case,Trend A1,0.69,0.68,0.014
-Case,Mean change B1,29.57,30.99,-0.048
-Case,Trend B1,0.08,0.08,0
-Repeated measurement,Residual A1,234.9,235.34,-0.002
-Repeated measurement,Residual B1,220.12,219.76,0.002
-Repeated measurement,Residual A2,8.81,8.78,0.003
-Repeated measurement,Residual B2,318.78,315.65,0.01
-Repeated measurement,Residual M,326.8,326.44,0.001
+Case,A1 trend,0.69,0.68,0.014
+Case,Change in B1 mean,29.57,30.99,-0.048
+Case,B1 trend,0.08,0.08,0
+Repeated measurement,A1 residual ,234.9,235.34,-0.002
+Repeated measurement,B1 residual ,220.12,219.76,0.002
+Repeated measurement,A2 residual ,8.81,8.78,0.003
+Repeated measurement,B2 residual ,318.78,315.65,0.01
+Repeated measurement,M residual ,326.8,326.44,0.001

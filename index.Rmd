@@ -252,7 +252,7 @@ var_comp.td <- var_comp %>%
   select(level, coef, pseudo_R_sq_M4) %>% tibble()
 
 var_comp.td$level <- factor(var_comp.td$level,levels = c("Study","Cluster","Case", "Repeated measurement"))
-var_comp.td$coef <- factor(var_comp.td$coef,levels = c("Residual M", "Residual B2", "Residual A2", "Residual B1", "Residual A1", "Trend B1", "Mean change B1", "Trend A1", "Intercept"))
+var_comp.td$coef <- factor(var_comp.td$coef,levels = c("M residual", "B2 residual", "A2 residual", "B1 residual", "A1 residual", "B1 trend", "Change in B1 mean", "A1 trend", "Intercept"))
 
 var_m4_plot <- ggplot(var_comp.td, aes(x=pseudo_R_sq_M4, y=coef, fill=level)) +
   geom_bar(stat="identity", position="stack") +
