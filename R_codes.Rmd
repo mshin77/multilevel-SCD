@@ -1,5 +1,5 @@
 ---
-title: "Meta-analysis using multilevel modeling: Acquisition, maintenance, and generalization of word problem solving"
+title: "Acquisition and Maintenance of Word Problem Solving Moderated by Word Problem Measure Types: Meta-Analysis Using Multilevel Modeling"
 date: "`r Sys.Date()`"
 output: 
   html_document:
@@ -105,10 +105,13 @@ wp_data_mlm_kb
 wp_data_mlm %>%
   group_by(authorYear, cluster, case) %>% 
   summarise(across(where(is.numeric), list(min = min, max = max, mean = mean, SD = sd, count = sum))) %>% 
-  mutate_at(c("session_mean", "session_SD", "outcome_mean", "outcome_SD", 
+  mutate_at(c("session_SD", "outcome_mean", "outcome_SD", 
               "A_mean", "A_SD", "B_mean", "B_SD", "M_mean", "M_SD"), round, 2) %>%
-  mutate_at("session_max", round, 0) %>%
-  select(authorYear, cluster, case, A_min, A_max, A_mean, A_SD, A_count, 
+  mutate_at(c("session_min", "session_max", "session_mean"), round, 0) %>%
+  select(authorYear, cluster, case, 
+         session_min, session_max, session_mean, session_SD, 
+         outcome_min, outcome_max, outcome_mean, outcome_SD,
+         A_min, A_max, A_mean, A_SD,  
          B_min, B_max, B_mean, B_SD,
          M_min, M_max, M_mean, M_SD) %>%
   kbl(align = "c") %>%
@@ -127,10 +130,13 @@ wp_data_mlm %>%
   group_by(authorYear, cluster) %>% 
   summarise(across(where(is.numeric), 
                    list(min = min, max = max, mean = mean, SD = sd, count = sum))) %>% 
-  mutate_at(c("session_mean", "session_SD", "outcome_mean", "outcome_SD",
+  mutate_at(c("session_SD", "outcome_mean", "outcome_SD", 
               "A_mean", "A_SD", "B_mean", "B_SD", "M_mean", "M_SD"), round, 2) %>%
-  mutate_at("session_max", round, 0) %>%
-  select(authorYear, cluster, A_min, A_max, A_mean, A_SD, A_count, 
+  mutate_at(c("session_min", "session_max", "session_mean"), round, 0) %>%
+  select(authorYear, cluster, 
+         session_min, session_max, session_mean, session_SD, 
+         outcome_min, outcome_max, outcome_mean, outcome_SD,
+         A_min, A_max, A_mean, A_SD,  
          B_min, B_max, B_mean, B_SD,
          M_min, M_max, M_mean, M_SD) %>%
   kbl(align = "c") %>%
@@ -148,10 +154,13 @@ wp_data_mlm %>%
 wp_data_mlm %>%
   group_by(authorYear) %>% 
   summarise(across(where(is.numeric), list(min = min, max = max, mean = mean, SD = sd, count = sum))) %>% 
-  mutate_at(c("session_mean", "session_SD", "outcome_mean", "outcome_SD",
+  mutate_at(c("session_SD", "outcome_mean", "outcome_SD", 
               "A_mean", "A_SD", "B_mean", "B_SD", "M_mean", "M_SD"), round, 2) %>%
-  mutate_at("session_max", round, 0) %>%
-  select(authorYear, A_min, A_max, A_mean, A_SD, A_count, 
+  mutate_at(c("session_min", "session_max", "session_mean"), round, 0) %>%
+  select(authorYear, 
+         session_min, session_max, session_mean, session_SD, 
+         outcome_min, outcome_max, outcome_mean, outcome_SD,
+         A_min, A_max, A_mean, A_SD,  
          B_min, B_max, B_mean, B_SD,
          M_min, M_max, M_mean, M_SD) %>%
   kbl(align = "c") %>%
