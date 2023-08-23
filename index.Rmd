@@ -69,21 +69,28 @@ wp_data_mlm <- wp_data_combined %>%
 
 wp_data_mlm <- na_replace(wp_data_mlm, 0)
 
-wp_data_mlm %>% datatable(extensions = 'Buttons', 
-                      options = list(
-                        dom = 'Bfrtip',   
-                        buttons = c('csv', 'excel', 'print'),
-                        initComplete = JS("
-      function(settings, json) {
-        $(this.api().table().header()).css({
-          'font-family': 'Arial, sans-serif',
-          'font-size': '13px',
-        });
-      }
-    "),
-    pageLength = 7
-                      )) %>%
-  formatStyle(columns = colnames(.$x$data), `font-size` = "13px")
+wp_data_mlm_kb <- wp_data_mlm %>% 
+  kbl(align = "c") %>%
+  kable_styling(
+    bootstrap_options = c("striped","hover","condensed"),
+    full_width = T,
+    font_size = 12,
+    fixed_thead = T) %>%
+  scroll_box(height = "400px")
+
+wp_data_mlm %>%
+  download_this(
+    output_name = "Authors (2023) Dataset",
+    output_extension = ".xlsx",
+    button_label = "Download",
+    button_type = "default",
+    has_icon = TRUE,
+    icon = "fa fa-save",
+    class = "buttom_small")
+```
+
+```{r, echo = FALSE}
+wp_data_mlm_kb
 ```
 
 # Descriptive statistics {.tabset}
@@ -93,24 +100,20 @@ wp_data_mlm %>% datatable(extensions = 'Buttons',
 ```{r}
 wp_data_mlm %>%
   group_by(authorYear, cluster, case) %>% 
-  summarise(across(where(is.numeric), list(min = min, max = max, mean = mean, SD = sd, count = sum))) %>% mutate_at(c("session_mean", "session_SD", "outcome_mean", "outcome_SD", 
+  summarise(across(where(is.numeric), list(min = min, max = max, mean = mean, SD = sd, count = sum))) %>% 
+  mutate_at(c("session_mean", "session_SD", "outcome_mean", "outcome_SD", 
               "A_mean", "A_SD", "B_mean", "B_SD", "M_mean", "M_SD"), round, 2) %>%
   mutate_at("session_max", round, 0) %>%
   select(authorYear, cluster, case, A_min, A_max, A_mean, A_SD, A_count, 
          B_min, B_max, B_mean, B_SD,
          M_min, M_max, M_mean, M_SD) %>%
-    datatable(options = list(
-    initComplete = JS("
-      function(settings, json) {
-        $(this.api().table().header()).css({
-          'font-family': 'Arial, sans-serif',
-          'font-size': '13px',
-        });
-      }
-    "),
-    pageLength = 7
-  )) %>%
-  formatStyle(columns = colnames(.$x$data), `font-size` = "13px")
+  kbl(align = "c") %>%
+  kable_styling(
+    bootstrap_options = c("striped","hover","condensed"),
+    full_width = T,
+    font_size = 12,
+    fixed_thead = T) %>%
+  scroll_box(height = "400px")
 ```
 
 ## Clusters 
@@ -118,24 +121,21 @@ wp_data_mlm %>%
 ```{r}
 wp_data_mlm %>%
   group_by(authorYear, cluster) %>% 
-  summarise(across(where(is.numeric), list(min = min, max = max, mean = mean, SD = sd, count = sum))) %>% mutate_at(c("session_mean", "session_SD", "outcome_mean", "outcome_SD", 
+  summarise(across(where(is.numeric), 
+                   list(min = min, max = max, mean = mean, SD = sd, count = sum))) %>% 
+  mutate_at(c("session_mean", "session_SD", "outcome_mean", "outcome_SD",
               "A_mean", "A_SD", "B_mean", "B_SD", "M_mean", "M_SD"), round, 2) %>%
   mutate_at("session_max", round, 0) %>%
   select(authorYear, cluster, A_min, A_max, A_mean, A_SD, A_count, 
          B_min, B_max, B_mean, B_SD,
          M_min, M_max, M_mean, M_SD) %>%
-    datatable(options = list(
-    initComplete = JS("
-      function(settings, json) {
-        $(this.api().table().header()).css({
-          'font-family': 'Arial, sans-serif',
-          'font-size': '13px',
-        });
-      }
-    "),
-    pageLength = 7
-  )) %>%
-  formatStyle(columns = colnames(.$x$data), `font-size` = "13px")
+  kbl(align = "c") %>%
+  kable_styling(
+    bootstrap_options = c("striped","hover","condensed"),
+    full_width = T,
+    font_size = 12,
+    fixed_thead = T) %>%
+  scroll_box(height = "400px")
 ```
 
 ## Studies 
@@ -143,24 +143,20 @@ wp_data_mlm %>%
 ```{r}
 wp_data_mlm %>%
   group_by(authorYear) %>% 
-  summarise(across(where(is.numeric), list(min = min, max = max, mean = mean, SD = sd, count = sum))) %>% mutate_at(c("session_mean", "session_SD", "outcome_mean", "outcome_SD", 
+  summarise(across(where(is.numeric), list(min = min, max = max, mean = mean, SD = sd, count = sum))) %>% 
+  mutate_at(c("session_mean", "session_SD", "outcome_mean", "outcome_SD",
               "A_mean", "A_SD", "B_mean", "B_SD", "M_mean", "M_SD"), round, 2) %>%
   mutate_at("session_max", round, 0) %>%
   select(authorYear, A_min, A_max, A_mean, A_SD, A_count, 
          B_min, B_max, B_mean, B_SD,
          M_min, M_max, M_mean, M_SD) %>%
-    datatable(options = list(
-    initComplete = JS("
-      function(settings, json) {
-        $(this.api().table().header()).css({
-          'font-family': 'Arial, sans-serif',
-          'font-size': '13px',
-        });
-      }
-    "),
-    pageLength = 7
-  )) %>%
-  formatStyle(columns = colnames(.$x$data), `font-size` = "13px")
+  kbl(align = "c") %>%
+  kable_styling(
+    bootstrap_options = c("striped","hover","condensed"),
+    full_width = T,
+    font_size = 12,
+    fixed_thead = T) %>%
+  scroll_box(height = "400px")
 ```
 
 <br>
@@ -278,11 +274,6 @@ grid.arrange(acf_Model.1.plot, acf_Model.1.tb, nrow = 1, widths = c(0.85, 0.15))
 ## Model.2 
 
 #### **AR(1) correlation structure**
-
-```{r}
-summary(Model.2)
-```
-
 
 ```{r}
 Model.2 <- lme(outcome ~
