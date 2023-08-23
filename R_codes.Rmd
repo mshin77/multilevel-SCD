@@ -18,9 +18,7 @@ knitr::opts_chunk$set(
 
 This webpage contains the coded dataset, outputs, and R codes used for the four-level multilevel modeling in Authors (2023). Data analysis scripts have been posted through an online data repository, accessible at <https://osf.io/8wbta/?view_only=31ca7d3193104652b39dbb4a516a5f00>.
 
-# Preprocess Data 
-
-```{r}
+```{r, echo = FALSE}
 suppressPackageStartupMessages({
   library(magrittr)
   library(kableExtra)
@@ -39,7 +37,11 @@ suppressPackageStartupMessages({
   library(lmeInfo)
   library(msm)
 })
+```
 
+# Preprocess Data 
+
+```{r, eval = FALSE}
 wp_data <- read.csv("data/wp_data.csv")
 
 # Create dummy variables
@@ -90,6 +92,8 @@ wp_data_mlm %>%
 ```
 
 ```{r, echo = FALSE}
+load("data/wp_data.RData")
+
 wp_data_mlm_kb
 ```
 
@@ -167,16 +171,18 @@ wp_data_mlm %>%
 
 #### **Null model** 
 
-```{r}
+```{r, eval = FALSE, class.source = 'fold-show'}
 Model.1 <- lme(outcome ~ 1,
                data = wp_data_mlm,
                method = "REML",
                random = ~ 1 | study/cluster/case,
                control=list(maxIter=100,msMaxIter=100,tolerance=1e-3,
                             opt="optim",optimMethod="BFGS"))
+```
 
-# Cluster-robust variance estimation
+#### **Cluster-robust variance estimation**
 
+```{r}
 options(width = 100)
 Model.1.vcov <- vcovCR(Model.1, type = "CR2")
 Model.1.crve <- coef_test(Model.1, vcov = Model.1.vcov , test = "Satterthwaite")
@@ -233,9 +239,13 @@ sqrt(diag(varcomp_vcov(Model.1))) # Standard errors of variances
 
 #### **Intraclass correlation (ICC)** 
 
-#### Level 4 (study)
+$$
+\text { Level } 4=\frac{\tau_{v_0}^2}{\tau_{v_0}^2+\tau_{u_0}^2+\tau_{r_0}^2+\sigma^2} \text {, Level } 3=\frac{\tau_{u_0}^2}{\tau_{v_0}^2+\tau_{u_0}^2+\tau_{r_0}^2+\sigma^2} \text {, Level } 2=\frac{\tau_{r_0}^2}{\tau_{v_0}^2+\tau_{u_0}^2+\tau_{r_0}^2+\sigma^2} \text {. }
+$$
 
-```{r}
+**Level 4 (study)**
+
+```{r, comment = NA}
 total_var <- as.numeric(VarCorr(Model.1)[[2]]) +
   as.numeric(VarCorr(Model.1)[[4]]) +
   as.numeric(VarCorr(Model.1)[[6]]) +
@@ -244,24 +254,23 @@ total_var <- as.numeric(VarCorr(Model.1)[[2]]) +
 ICC.L4 = as.numeric(VarCorr(Model.1)[[2]]) / total_var
 ICC.L4
 ```
+**Level 3 (cluster)**
 
-#### Level 3 (cluster)
-
-```{r}
+```{r, comment = NA}
 ICC.L3 = (as.numeric(VarCorr(Model.1)[[4]])) / total_var
 ICC.L3
 ```
 
-#### Level 2 (case) 
+**Level 2 (case)** 
 
-```{r}
+```{r, comment = NA}
 ICC.L2 = (as.numeric(VarCorr(Model.1)[[6]])) / total_var
 format(ICC.L2, scientific=FALSE)
 ```
 
 #### **Autocorrelation**
 
-```{r, fig.align = 'center', fig.width=7, fig.height=4}
+```{r, fig.align = 'center', fig.width = 7, fig.height = 4}
 acf_Model.1 <- ACF(Model.1, maxLag=14)
 acf_Model.1.plot <- plot(acf_Model.1, alpha = .05)
 acf_Model.1.value <- tidy(acf_Model.1$ACF) %>%
@@ -275,7 +284,7 @@ grid.arrange(acf_Model.1.plot, acf_Model.1.tb, nrow = 1, widths = c(0.85, 0.15))
 
 #### **AR(1) correlation structure**
 
-```{r}
+```{r, eval = FALSE, class.source = 'fold-show'}
 Model.2 <- lme(outcome ~
                  time_A + level_AB + slope_AB + level_BM + slope_BM,
                data = wp_data_mlm,
@@ -284,9 +293,11 @@ Model.2 <- lme(outcome ~
                correlation = corCAR1(value = 0.19, form = ~ session | study/cluster/case),
                control=list(maxIter=100,msMaxIter=100,tolerance=1e-3,
                             opt="optim",optimMethod="BFGS"))
+```
 
-# Cluster-robust variance estimation
+#### **Cluster-robust variance estimation**
 
+```{r}
 options(width = 100)
 Model.2.vcov <- vcovCR(Model.2, type = "CR2")
 Model.2.crve <- coef_test(Model.2, vcov = Model.2.vcov , test = "Satterthwaite")
@@ -343,7 +354,7 @@ sqrt(diag(varcomp_vcov(Model.2))) # Standard errors of variances
 
 #### **Autocorrelation**
 
-```{r, fig.align = 'center', fig.width=7, fig.height=4}
+```{r, fig.align = 'center', fig.width = 7, fig.height = 4}
 acf_Model.2 <- ACF(Model.2, maxLag=14)
 acf_Model.2.plot <- plot(acf_Model.2, alpha = .05)
 acf_Model.2.value <- tidy(acf_Model.2$ACF) %>%
@@ -355,9 +366,9 @@ grid.arrange(acf_Model.2.plot, acf_Model.2.tb, nrow = 1, widths = c(0.85, 0.15))
 
 ## Model.3
 
-#### **Complexity of outcome measures as a moderator**
+#### **Types of word problem Measures as a moderator**
 
-```{r}
+```{r, eval = FALSE, class.source = 'fold-show'}
 Model.3 <- lme(outcome ~
                  time_A + level_AB + slope_AB + level_BM + slope_BM + 
                  combinedType + time_A:combinedType + level_AB:combinedType + slope_AB:combinedType + level_BM:combinedType + slope_BM:combinedType +
@@ -369,9 +380,11 @@ Model.3 <- lme(outcome ~
                weights = varIdent(form = ~ 1 | phase),
                control=list(maxIter=100,msMaxIter=100,tolerance=1e-3,
                             opt="optim",optimMethod="BFGS"))
+```
 
-# Cluster-robust variance estimation
+#### **Cluster-robust variance estimation**
 
+```{r}
 options(width = 100)
 Model.3.vcov <- vcovCR(Model.3, type = "CR2")
 Model.3.crve <- coef_test(Model.3, vcov = Model.3.vcov , test = "Satterthwaite")
@@ -422,13 +435,13 @@ intervals(Model.3, which = "var-cov")
 VarCorr(Model.3)
 ```
 
-```{r,comment = NA, class.source = 'fold-show'}
+```{r, comment = NA, class.source = 'fold-show'}
 sqrt(diag(varcomp_vcov(Model.3))) # Standard errors of variances 
 ```
 
 #### **Autocorrelation**
 
-```{r, fig.align = 'center', fig.width=7, fig.height=4}
+```{r, fig.align = 'center', fig.width = 7, fig.height = 4}
 acf_Model.3 <- ACF(Model.3, maxLag=14)
 acf_Model.3.plot <- plot(acf_Model.3, alpha = .05)
 acf_Model.3.value <- tidy(acf_Model.3$ACF) %>%
