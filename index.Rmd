@@ -41,7 +41,7 @@ suppressPackageStartupMessages({
 
 # Preprocess Data 
 
-```{r, eval = FALSE}
+```{r}
 wp_data <- read.csv("data/wp_data.csv")
 
 # Create dummy variables
@@ -218,7 +218,7 @@ Model.2 <- lme(outcome ~
                data = wp_data_mlm,
                method = "REML",
                random = ~ level_AB | study/cluster/case,
-               correlation = corCAR1(value = 0.19, form = ~ session | study/cluster/case),
+               correlation = corAR1(value = 0.33, form = ~ session | study/cluster/case),
                control=list(maxIter=100,msMaxIter=100,tolerance=1e-3,
                             opt="optim",optimMethod="BFGS"))
 ```
@@ -294,7 +294,7 @@ grid.arrange(acf_Model.2.plot, acf_Model.2.tb, nrow = 1, widths = c(0.85, 0.15))
 
 ## Model.3
 
-#### **Types of word problem Measures as a moderator**
+#### **Types of word problem measures as a moderator**
 
 ```{r, eval = FALSE, class.source = 'fold-show'}
 Model.3 <- lme(outcome ~
@@ -304,7 +304,7 @@ Model.3 <- lme(outcome ~
                data = wp_data_mlm,
                method = "REML",
                random = ~ level_AB | study/cluster/case,
-               correlation = corCAR1(value = 0.4, form = ~ session | study/cluster/case),
+               correlation = corAR1(value = 0.22, form = ~ session | study/cluster/case),
                weights = varIdent(form = ~ 1 | phase),
                control=list(maxIter=100,msMaxIter=100,tolerance=1e-3,
                             opt="optim",optimMethod="BFGS"))
@@ -378,3 +378,6 @@ acf_Model.3.value <- tidy(acf_Model.3$ACF) %>%
 acf_Model.3.tb <- tableGrob(acf_Model.3.value[1:10,], rows = NULL, theme = ttheme_default(base_size = 10))
 grid.arrange(acf_Model.3.plot, acf_Model.3.tb, nrow = 1, widths = c(0.85, 0.15))
 ```
+
+## Supplemental Materials 
+
