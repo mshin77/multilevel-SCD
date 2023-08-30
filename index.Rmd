@@ -471,4 +471,4 @@ acf_Model.4.tb <- tableGrob(acf_Model.4.value[1:10,], rows = NULL, theme = tthem
 grid.arrange(acf_Model.4.plot, acf_Model.4.tb, nrow = 1, widths = c(0.85, 0.15))
 ```
 
-## Supplemental Materials 
+# Supplemental Materials 
