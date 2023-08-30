@@ -115,16 +115,16 @@ wp_data_mlm_kb
 
 ```{r, eval = FALSE, class.source = 'fold-show'}
 Model.1 <- lme(
-  outcome ~ 1, # overall intercept (mean)
+  outcome ~ 1, # Overall intercept (mean)
   data = wp_data_mlm,
   method = "REML",
   random = ~ 1 | study / cluster / case,
   control = list(
-    maxIter = 100,
-    msMaxIter = 100,
-    tolerance = 1e-3,
+    maxIter = 100, # 100 iterations for the lme optimization algorithm
+    msMaxIter = 100, # 100 iterations for the optimization step inside the lme optimization
+    tolerance = 1e-3, # Tolerance for the convergence criterion
     opt = "optim",
-    optimMethod = "BFGS"
+    optimMethod = "BFGS" # Optimization algorithm for unconstrained nonlinear problems
   )
 )
 ```
@@ -253,11 +253,11 @@ Model.2 <- lme(
   correlation = corAR1(value = 0.3, form = ~ session | # AR(1) correlation structure
                          study / cluster / case),
   control = list(
-    maxIter = 100,
-    msMaxIter = 100,
-    tolerance = 1e-3,
+    maxIter = 100, # 100 iterations for the lme optimization algorithm
+    msMaxIter = 100, # 100 iterations for the optimization step inside the lme optimization
+    tolerance = 1e-3, # Tolerance for the convergence criterion
     opt = "optim",
-    optimMethod = "BFGS"
+    optimMethod = "BFGS" # Optimization algorithm for unconstrained nonlinear problems
   )
 )
 ```
@@ -360,11 +360,11 @@ Model.3 <- lme(
   weights = varIdent(form = ~ 1 | # heterogenous residual variances across phases
                        phase),
   control = list(
-    maxIter = 100,
-    msMaxIter = 100,
-    tolerance = 1e-3,
+    maxIter = 100, # 100 iterations for the lme optimization algorithm
+    msMaxIter = 100, # 100 iterations for the optimization step inside the lme optimization
+    tolerance = 1e-3, # Tolerance for the convergence criterion
     opt = "optim",
-    optimMethod = "BFGS"
+    optimMethod = "BFGS" # Optimization algorithm for unconstrained nonlinear problems
   )
 )
 ```
@@ -541,11 +541,11 @@ Model.4 <- lme(
                          study / cluster / case),
   weights = varIdent(form = ~ 1 | phase), # heterogenous residual variances across phases
   control = list(
-    maxIter = 100,
-    msMaxIter = 100,
-    tolerance = 1e-3,
+    maxIter = 100, # 100 iterations for the lme optimization algorithm
+    msMaxIter = 100, # 100 iterations for the optimization step inside the lme optimization
+    tolerance = 1e-3, # Tolerance for the convergence criterion
     opt = "optim",
-    optimMethod = "BFGS"
+    optimMethod = "BFGS" # Optimization algorithm for unconstrained nonlinear problems
   )
 )
 ```
@@ -573,7 +573,7 @@ Model.4.d <- Model.4.crve %>%
   select(d)
 
 Model.4.crve.mixed <- cbind(Model.4.crve, Model.4.d) %>%
-  mutate_if(is.numeric, ~ round(., 4)) %>% tibble() %>%
+  mutate_if(is.numeric, ~ round(., 3)) %>% tibble() %>%
   rename(
     Estimate = beta,
     "t-stat" = tstat,
