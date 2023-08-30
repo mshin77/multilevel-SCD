@@ -48,25 +48,25 @@ wp_data <- read.csv("data/wp_data.csv")
 
 wp_data_dummy <- wp_data %>% dummy_cols(select_columns = c('designType', 'phase', 'complexityMeasure')) 
 colnames(wp_data_dummy) <- sub(".*_", "", colnames(wp_data_dummy))
-wp_data_dummy %<>% select(authorYear, study, designType, multiBase, multiProbe, cluster, case, phase, A, B, M, session, outcome, complexityMeasure, singleType, combinedType, generalization)
+wp_data_dummy %<>% select(authorYear, study, designType, multiBase, multiProbe, cluster, case, phase, A, B, M, session, outcome, complexityMeasure, singleType, mixedType, generalization)
 
 # Center times and create interaction terms 
 
-wp_data_combined <- wp_data_dummy %>%
+wp_data_mixed <- wp_data_dummy %>%
   group_by(study, cluster, case) %>%
   mutate(min_A = ifelse(A == 1, min(session[A == 1]), NA),
          min_B = ifelse(B == 1, min(session[B == 1]), NA),
          min_M = ifelse(M == 1, min(session[M == 1]), NA))
 
-wp_data_mlm <- wp_data_combined %>%
+wp_data_mlm <- wp_data_mixed %>%
   group_by(study, cluster, case) %>%
   mutate(level_AB = as.integer(I(session >= first(na.omit(min_B))))) %>%
   mutate(level_BM = as.integer(I(session >= first(na.omit(min_M))))) %>%
   mutate(time_A = session - first(na.omit(min_A))) %>%
   mutate(time_B = session - first(na.omit(min_B))) %>%
   mutate(time_M = session - first(na.omit(min_M))) %>%
-  mutate(slope_AB = time_B*level_AB) %>%
-  mutate(slope_BM = time_M*level_BM) %>%
+  mutate(trend_AB = time_B*level_AB) %>%
+  mutate(trend_BM = time_M*level_BM) %>%
   select(-min_A, -min_B, -min_M)
 
 wp_data_mlm <- na_replace(wp_data_mlm, 0)
@@ -134,14 +134,14 @@ Model.1.d <- Model.1.crve %>%
   mutate(d = 2 * abs(tstat) / sqrt(df_Satt)) %>%
   select(d)
 
-Model.1.crve.combined <- cbind(Model.1.crve, Model.1.d) %>%
+Model.1.crve.mixed <- cbind(Model.1.crve, Model.1.d) %>%
   mutate_if(is.numeric, ~round(., 3)) %>% tibble() %>%
   rename(Estimate = beta,
          "t-stat" = tstat,
          "d.f. (Satt)" = df_Satt,
          "p-val (Satt)" = p_Satt)
 
-Model.1.crve.combined %>% 
+Model.1.crve.mixed %>% 
   datatable(options = list(
     initComplete = JS("
       function(settings, json) {
@@ -214,7 +214,7 @@ grid.arrange(acf_Model.1.plot, acf_Model.1.tb, nrow = 1, widths = c(0.85, 0.15))
 
 ```{r, eval = FALSE, class.source = 'fold-show'}
 Model.2 <- lme(outcome ~
-                 time_A + level_AB + slope_AB + level_BM + slope_BM,
+                 time_A + level_AB + trend_AB + level_BM + trend_BM,
                data = wp_data_mlm,
                method = "REML",
                random = ~ level_AB | study/cluster/case,
@@ -245,14 +245,14 @@ Model.2.d <- Model.2.crve %>%
   mutate(d = 2 * abs(tstat) / sqrt(df_Satt)) %>%
   select(d)
 
-Model.2.crve.combined <- cbind(Model.2.crve, Model.2.d) %>%
+Model.2.crve.mixed <- cbind(Model.2.crve, Model.2.d) %>%
   mutate_if(is.numeric, ~round(., 3)) %>% tibble() %>%
   rename(Estimate = beta,
          "t-stat" = tstat,
          "d.f. (Satt)" = df_Satt,
          "p-val (Satt)" = p_Satt)
 
-Model.2.crve.combined %>% 
+Model.2.crve.mixed %>% 
   datatable(options = list(
     initComplete = JS("
       function(settings, json) {
@@ -291,13 +291,14 @@ acf_Model.2.value <- tidy(acf_Model.2$ACF) %>%
 acf_Model.2.tb <- tableGrob(acf_Model.2.value[1:10,], rows = NULL, theme = ttheme_default(base_size = 10))
 grid.arrange(acf_Model.2.plot, acf_Model.2.tb, nrow = 1, widths = c(0.85, 0.15))
 ```
+
 ## Model 3
  
 #### **AR(1) correlation structure and heterogenous level-1 variances** 
 
 ```{r, eval = FALSE, class.source = 'fold-show'}
 Model.3 <- lme(outcome ~
-                 time_A + level_AB + slope_AB + level_BM + slope_BM,
+                 time_A + level_AB + trend_AB + level_BM + trend_BM,
                data = wp_data_mlm,
                method = "REML",
                random = ~ level_AB | study/cluster/case,
@@ -329,14 +330,14 @@ Model.3.d <- Model.3.crve %>%
   mutate(d = 2 * abs(tstat) / sqrt(df_Satt)) %>%
   select(d)
 
-Model.3.crve.combined <- cbind(Model.3.crve, Model.3.d) %>%
+Model.3.crve.mixed <- cbind(Model.3.crve, Model.3.d) %>%
   mutate_if(is.numeric, ~round(., 3)) %>% tibble() %>%
   rename(Estimate = beta,
          "t-stat" = tstat,
          "d.f. (Satt)" = df_Satt,
          "p-val (Satt)" = p_Satt)
 
-Model.3.crve.combined %>% 
+Model.3.crve.mixed %>% 
   datatable(options = list(
     initComplete = JS("
       function(settings, json) {
@@ -390,9 +391,11 @@ grid.arrange(acf_Model.3.plot, acf_Model.3.tb, nrow = 1, widths = c(0.85, 0.15))
 
 ```{r, eval = FALSE, class.source = 'fold-show'}
 Model.4 <- lme(outcome ~
-                 time_A + level_AB + slope_AB + level_BM + slope_BM + 
-                 combinedType + time_A:combinedType + level_AB:combinedType + slope_AB:combinedType + level_BM:combinedType + slope_BM:combinedType +
-                 generalization + time_A:generalization + level_AB:generalization + slope_AB:generalization + level_BM:generalization + slope_BM:generalization,
+                 time_A + level_AB + trend_AB + level_BM + trend_BM + 
+                 mixedType + time_A:mixedType + level_AB:mixedType + 
+                 trend_AB:mixedType + level_BM:mixedType + trend_BM:mixedType +
+                 generalization + time_A:generalization + level_AB:generalization + 
+                 trend_AB:generalization + level_BM:generalization + trend_BM:generalization,
                data = wp_data_mlm,
                method = "REML",
                random = ~ level_AB | study/cluster/case,
@@ -424,14 +427,14 @@ Model.4.d <- Model.4.crve %>%
   mutate(d = 2 * abs(tstat) / sqrt(df_Satt)) %>%
   select(d)
 
-Model.4.crve.combined <- cbind(Model.4.crve, Model.4.d) %>%
+Model.4.crve.mixed <- cbind(Model.4.crve, Model.4.d) %>%
   mutate_if(is.numeric, ~round(., 4)) %>% tibble() %>%
   rename(Estimate = beta,
          "t-stat" = tstat,
          "d.f. (Satt)" = df_Satt,
          "p-val (Satt)" = p_Satt)
 
-Model.4.crve.combined %>% 
+Model.4.crve.mixed %>% 
   datatable(options = list(
     initComplete = JS("
       function(settings, json) {
