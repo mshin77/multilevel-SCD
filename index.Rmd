@@ -45,32 +45,15 @@ suppressPackageStartupMessages({
 wp_data <- read.csv("data/wp_data.csv")
 
 # Create dummy variables
-
 wp_data_dummy <-
   wp_data %>% dummy_cols(select_columns = c('designType', 'phase', 'complexityMeasure'))
 colnames(wp_data_dummy) <- sub(".*_", "", colnames(wp_data_dummy))
 wp_data_dummy %<>% select(
-  authorYear,
-  study,
-  designType,
-  multiBase,
-  multiProbe,
-  cluster,
-  case,
-  phase,
-  A,
-  B,
-  M,
-  session,
-  outcome,
-  complexityMeasure,
-  singleType,
-  mixedType,
-  generalization
+  authorYear, study, designType, multiBase, multiProbe, cluster, case, phase, A, B, M, 
+  session, outcome, complexityMeasure, singleType, mixedType, generalization
 )
 
 # Center times and create interaction terms
-
 wp_data_mixed <- wp_data_dummy %>%
   group_by(study, cluster, case) %>%
   mutate(
@@ -151,7 +134,6 @@ Model.1 <- lme(
 ```{r}
 options(width = 100)
 Model.1.vcov <- vcovCR(Model.1, type = "CR2") # Calculate variance-covariance matrix
-                                              # Unbiased under a user-specified working model (Pustejovsky & Tipton, 2017)
 Model.1.crve <-
   coef_test(Model.1, vcov = Model.1.vcov , test = "Satterthwaite") # Test regression coefficients 
 
