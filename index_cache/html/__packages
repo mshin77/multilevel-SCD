@@ -1,4 +1,5 @@
 magrittr
+readr
 kableExtra
 fastDummies
 imputeTS

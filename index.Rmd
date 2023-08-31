@@ -21,6 +21,7 @@ This webpage contains the coded dataset, outputs, and R codes used for the four-
 ```{r, echo = FALSE}
 suppressPackageStartupMessages({
   library(magrittr)
+  library(readr)
   library(kableExtra)
   library(fastDummies)
   library(imputeTS)
@@ -118,7 +119,7 @@ Model.1 <- lme(
   outcome ~ 1, # Overall intercept (mean)
   data = wp_data_mlm,
   method = "REML",
-  random = ~ 1 | study / cluster / case,
+  random = ~ 1 | study/cluster/case,
   control = list(
     maxIter = 100, # 100 iterations for the lme optimization algorithm
     msMaxIter = 100, # 100 iterations for the optimization step inside the lme optimization
@@ -148,7 +149,7 @@ Model.1.crve$sig <-
 
 # Calculate standardized mean difference (d)
 Model.1.d <- Model.1.crve %>%
-  mutate(d = 2 * abs(tstat) / sqrt(df_Satt)) %>%
+  mutate(d = 2*abs(tstat)/sqrt(df_Satt)) %>%
   select(d)
 
 Model.1.crve.mixed <- cbind(Model.1.crve, Model.1.d) %>%
@@ -249,9 +250,9 @@ Model.2 <- lme(
     time_A + level_AB + trend_AB + level_BM + trend_BM, # piecewise growth model
   data = wp_data_mlm,
   method = "REML",
-  random = ~ level_AB | study / cluster / case,
+  random = ~ level_AB | study/cluster/case,
   correlation = corAR1(value = 0.3, form = ~ session | # AR(1) correlation structure
-                         study / cluster / case),
+                         study/cluster/case),
   control = list(
     maxIter = 100, # 100 iterations for the lme optimization algorithm
     msMaxIter = 100, # 100 iterations for the optimization step inside the lme optimization
@@ -281,7 +282,7 @@ Model.2.crve$sig <-
 
 # Calculate standardized mean difference (d)
 Model.2.d <- Model.2.crve %>%
-  mutate(d = 2 * abs(tstat) / sqrt(df_Satt)) %>%
+  mutate(d = 2*abs(tstat)/sqrt(df_Satt)) %>%
   select(d)
 
 Model.2.crve.mixed <- cbind(Model.2.crve, Model.2.d) %>%
@@ -354,9 +355,9 @@ Model.3 <- lme(
     time_A + level_AB + trend_AB + level_BM + trend_BM, # piecewise growth model
   data = wp_data_mlm,
   method = "REML",
-  random = ~ level_AB | study / cluster / case,
+  random = ~ level_AB | study/cluster/case,
   correlation = corAR1(value = 0.3, form = ~ session | # AR(1) correlation structure
-                         study / cluster / case),
+                         study/cluster/case),
   weights = varIdent(form = ~ 1 | # heterogenous residual variances across phases
                        phase),
   control = list(
@@ -388,7 +389,7 @@ Model.3.crve$sig <-
 
 # Calculate standardized mean difference (d)
 Model.3.d <- Model.3.crve %>%
-  mutate(d = 2 * abs(tstat) / sqrt(df_Satt)) %>%
+  mutate(d = 2*abs(tstat)/sqrt(df_Satt)) %>%
   select(d)
 
 Model.3.crve.mixed <- cbind(Model.3.crve, Model.3.d) %>%
@@ -536,9 +537,9 @@ Model.4 <- lme(
     trend_AB:generalization + level_BM:generalization + trend_BM:generalization,
   data = wp_data_mlm,
   method = "REML",
-  random = ~ level_AB | study / cluster / case,
+  random = ~ level_AB | study/cluster/case,
   correlation = corAR1(value = 0.2, form = ~ session | # AR(1) correlation structure
-                         study / cluster / case),
+                         study/cluster/case),
   weights = varIdent(form = ~ 1 | phase), # heterogenous residual variances across phases
   control = list(
     maxIter = 100, # 100 iterations for the lme optimization algorithm
@@ -569,7 +570,7 @@ Model.4.crve$sig <-
 
 # Calculate standardized mean difference (d)
 Model.4.d <- Model.4.crve %>%
-  mutate(d = 2 * abs(tstat) / sqrt(df_Satt)) %>%
+  mutate(d = 2*abs(tstat)/sqrt(df_Satt)) %>%
   select(d)
 
 Model.4.crve.mixed <- cbind(Model.4.crve, Model.4.d) %>%
@@ -752,4 +753,4 @@ grid.arrange(acf_Model.4.plot,
 
 # Supplemental Materials 
 
-
+![](data/Supplemental Materials (SCD analysis).pdf){width=100% height=700}
