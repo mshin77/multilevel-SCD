@@ -242,7 +242,7 @@ grid.arrange(acf_Model.1.plot,
 
 ## Model.2 
 
-#### **AR(1) correlation structure and homogeneous level-1 variances**
+#### **AR(1) correlation structure and homogeneous residual variances**
 
 ```{r, eval = FALSE, class.source = 'fold-show'}
 Model.2 <- lme(
@@ -525,7 +525,7 @@ anova(Model.2, Model.3)
 
 ## Model.4
 
-#### **Types of word problem measures as a moderator**
+#### **Complexity of word problem measures as a moderator**
 
 ```{r, eval = FALSE, class.source = 'fold-show'}
 Model.4 <- lme(
