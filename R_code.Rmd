@@ -16,7 +16,7 @@ knitr::opts_chunk$set(
   warning = FALSE)
 ```
 
-[This website](https://mshin77.github.io/multilevel-SCD) contains coded data and R code used for four-level multilevel modeling in Shin et al. (in press). Reproducible materials are also posted to the [Center for Open Science](https://doi.org/10.17605/OSF.IO/8WBTA).
+[This website](https://mshin77.github.io/multilevel-SCD) contains data and R code used for four-level multilevel modeling in Shin et al. (in press). Reproducible materials are also posted to the [Center for Open Science](https://doi.org/10.17605/OSF.IO/8WBTA).
 
 Shin, M., Hart, S., & Simmons, M. (in press). Meta-analysis of single-case design research: Application of multilevel modeling. *School Psychology*.
 
