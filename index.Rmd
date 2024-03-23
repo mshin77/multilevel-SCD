@@ -16,7 +16,9 @@ knitr::opts_chunk$set(
   warning = FALSE)
 ```
 
-This webpage contains the coded dataset, outputs, and R codes used for the four-level multilevel modeling in Authors (2023). Data analysis scripts have been posted through an online data repository, accessible at <https://osf.io/8wbta/?view_only=31ca7d3193104652b39dbb4a516a5f00>.
+[This website](https://mshin77.github.io/multilevel-SCD) contains coded data and R code used for four-level multilevel modeling in Shin et al. (in press). Reproducible materials are also posted to the [Center for Open Science](https://doi.org/10.17605/OSF.IO/8WBTA).
+
+Shin, M., Hart, S., & Simmons, M. (in press). Meta-analysis of single-case design research: Application of multilevel modeling. *School Psychology*.
 
 ```{r, echo = FALSE}
 suppressPackageStartupMessages({
